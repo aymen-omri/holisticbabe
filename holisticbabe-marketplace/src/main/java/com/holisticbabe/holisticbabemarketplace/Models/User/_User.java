@@ -2,7 +2,7 @@ package com.holisticbabe.holisticbabemarketplace.Models.User;
 
 import java.math.BigInteger;
 
-import com.holisticbabe.holisticbabemarketplace.Models.Shared.Image;
+import com.holisticbabe.holisticbabemarketplace.Models.Shared.Multimedia;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,5 +37,5 @@ public class _User {
     private _Role role;
     @OneToOne
     @JoinColumn(name = "id_image")
-    private Image image;
+    private Multimedia image ;
 }

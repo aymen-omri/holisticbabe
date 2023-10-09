@@ -4,8 +4,7 @@ package com.holisticbabe.holisticbabemarketplace.Models.Course;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.holisticbabe.holisticbabemarketplace.Models.Shared.File;
-import com.holisticbabe.holisticbabemarketplace.Models.Shared.Video;
+import com.holisticbabe.holisticbabemarketplace.Models.Shared.Multimedia;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,7 +31,6 @@ public class Section {
     @JoinColumn(name = "id_course")
     private Course course;
     @OneToMany
-    private List<Video> videos = new ArrayList<Video>();
-    @OneToMany
-    private List<File> files = new ArrayList<File>();
+    private List<Multimedia> multimedias = new ArrayList<Multimedia>();
+
 }

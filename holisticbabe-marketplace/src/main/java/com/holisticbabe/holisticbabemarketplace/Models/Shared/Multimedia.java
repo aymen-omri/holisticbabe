@@ -1,6 +1,5 @@
 package com.holisticbabe.holisticbabemarketplace.Models.Shared;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,12 +12,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Image {
+public class Multimedia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id_image;
-    private String urlImage;
+    private long id_multi;
+    private String url;
     private String type;
     private String name;
-
+    private String duration ;
 }
