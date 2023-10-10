@@ -31,7 +31,7 @@ public class OrderLine {
 
     @ManyToOne
     @JoinColumn(name ="id_order")
-    private Order order;
+    private _Order order;
 
     @ManyToOne
     @JoinColumn(name = "bootcamp_id")

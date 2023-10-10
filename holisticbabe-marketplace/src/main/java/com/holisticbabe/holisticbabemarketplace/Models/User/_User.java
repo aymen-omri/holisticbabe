@@ -18,9 +18,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -29,6 +29,7 @@ import lombok.NonNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class _User implements UserDetails {
     
     @Id
@@ -48,7 +49,7 @@ public class _User implements UserDetails {
 
     @NonNull
     @Column(unique = true)
-    @Email(message = "Please enter a valid email!")
+    //@Email(message = "Please enter a valid email!")
     private String email;
 
     @NonNull
@@ -58,6 +59,8 @@ public class _User implements UserDetails {
     @NonNull
     @Size(min = 8)
     private String password;
+
+    private boolean enabled ;
 
     @OneToOne
     @JoinColumn(name = "id_token")
@@ -69,13 +72,17 @@ public class _User implements UserDetails {
     private _Role role;
 
     @OneToOne
-    @JoinColumn(name = "id_image")
+    @JoinColumn(name = "id_multi")
     private Multimedia image;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(this.role.getRoleName()));
     }
+
+    //ROLE_ADMIN
+
+    //to verify we use only ADMIN
 
     @Override
     public boolean isAccountNonExpired() {
@@ -94,6 +101,6 @@ public class _User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 }

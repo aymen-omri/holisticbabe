@@ -28,6 +28,7 @@ import lombok.NoArgsConstructor;
 public class ShoppingCartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_shc_item")
     private long id_shopping_cart_item;
     private String quantity;
 

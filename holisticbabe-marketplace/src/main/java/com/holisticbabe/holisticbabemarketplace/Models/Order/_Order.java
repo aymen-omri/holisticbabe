@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Order {
+public class _Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id_order;

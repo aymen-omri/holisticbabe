@@ -10,7 +10,6 @@ public record UserDto(
         String username,
         String email,
         BigInteger phoneNumber,
-        TokenDto token,
         MultimediaDto image,
         RoleDto role
         ) {
