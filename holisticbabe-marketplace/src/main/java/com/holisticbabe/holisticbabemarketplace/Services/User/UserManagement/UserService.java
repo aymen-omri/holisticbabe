@@ -1,4 +1,4 @@
-package com.holisticbabe.holisticbabemarketplace.Services.User;
+package com.holisticbabe.holisticbabemarketplace.Services.User.UserManagement;
 
 import java.util.List;
 
@@ -12,10 +12,6 @@ public interface UserService {
     UserDto findUserById(long id);
 
     List<UserDto> findAllUsers();
-
-    ResponseEntity<?> registerUser(RegisterRequest registerRequest);
-
-    ResponseEntity<?> loginUser(LoginRequest LoginRequest);
 
     ResponseEntity<String> updateUser(_User user, long id);
 

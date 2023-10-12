@@ -16,9 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.holisticbabe.holisticbabemarketplace.Dtos.User.UserDto;
 import com.holisticbabe.holisticbabemarketplace.Models.User._User;
-import com.holisticbabe.holisticbabemarketplace.Services.User.LoginRequest;
-import com.holisticbabe.holisticbabemarketplace.Services.User.RegisterRequest;
-import com.holisticbabe.holisticbabemarketplace.Services.User.UserService;
+import com.holisticbabe.holisticbabemarketplace.Services.User.UserManagement.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -43,16 +41,6 @@ public class UserController {
     public ResponseEntity<List<UserDto>> getAllUsers() {
         List<UserDto> users = userService.findAllUsers();
         return ResponseEntity.ok(users);
-    }
-
-    @PostMapping("/auth/register")
-    public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest) {
-        return userService.registerUser(registerRequest);
-    }
-
-    @PostMapping("/auth/login")
-    public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
-        return userService.loginUser(loginRequest);
     }
 
     @PutMapping("/{id}")

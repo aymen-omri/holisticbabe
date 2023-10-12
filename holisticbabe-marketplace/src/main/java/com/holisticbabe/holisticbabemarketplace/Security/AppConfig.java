@@ -3,6 +3,7 @@ package com.holisticbabe.holisticbabemarketplace.Security;
 import java.util.Arrays;
 import java.util.Collections;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,6 +43,12 @@ public class AppConfig {
         return authProvider;
     }
 
+    /*@Bean
+    public GoogleAuthenticationProvider googleAuthenticationProvider(UserDetailsService userDetailsService,
+            GoogleUserService googleUserService) {
+        return new GoogleAuthenticationProvider(userDetailsService, googleUserService);
+    }*/
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
@@ -61,5 +68,10 @@ public class AppConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+
+    @Bean
+    public ModelMapper getModelMapper() {
+        return new ModelMapper();
     }
 }

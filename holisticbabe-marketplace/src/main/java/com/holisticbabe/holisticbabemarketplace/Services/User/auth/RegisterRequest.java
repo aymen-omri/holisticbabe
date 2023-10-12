@@ -1,4 +1,4 @@
-package com.holisticbabe.holisticbabemarketplace.Services.User;
+package com.holisticbabe.holisticbabemarketplace.Services.User.auth;
 
 import java.math.BigInteger;
 

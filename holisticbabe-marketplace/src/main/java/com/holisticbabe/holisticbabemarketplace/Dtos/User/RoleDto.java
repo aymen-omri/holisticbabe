@@ -1,7 +1,13 @@
 package com.holisticbabe.holisticbabemarketplace.Dtos.User;
 
-public record RoleDto(
-        long id_role,
-        String roleName) {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class RoleDto {
+        private long idRole;
+        private String roleName;
 }

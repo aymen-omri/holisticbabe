@@ -2,15 +2,20 @@ package com.holisticbabe.holisticbabemarketplace.Dtos.User;
 
 import java.math.BigInteger;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public record UserDto(
-        long id_user,
-        String firstName,
-        String lastName,
-        String username,
-        String email,
-        BigInteger phoneNumber,
-        MultimediaDto image,
-        RoleDto role
-        ) {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserDto {
+        private long id_user;
+        private String firstName;
+        private String lastName;
+        private String username;
+        private String email;
+        private BigInteger phoneNumber;
+        private MultimediaDto image;
+        private RoleDto role;
 }

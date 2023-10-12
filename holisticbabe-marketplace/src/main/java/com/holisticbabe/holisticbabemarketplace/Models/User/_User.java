@@ -31,7 +31,7 @@ import lombok.NonNull;
 @NoArgsConstructor
 @Builder
 public class _User implements UserDetails {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id_user;
@@ -49,7 +49,7 @@ public class _User implements UserDetails {
 
     @NonNull
     @Column(unique = true)
-    //@Email(message = "Please enter a valid email!")
+    // @Email(message = "Please enter a valid email!")
     private String email;
 
     @NonNull
@@ -60,10 +60,9 @@ public class _User implements UserDetails {
     @Size(min = 8)
     private String password;
 
-    private boolean enabled ;
+    private boolean enabled;
 
-    @OneToOne
-    @JoinColumn(name = "id_token")
+    @OneToOne(mappedBy = "user" /* , cascade = CascadeType.ALL, orphanRemoval = true */)
     private Token token;
 
     @NonNull
@@ -80,9 +79,9 @@ public class _User implements UserDetails {
         return List.of(new SimpleGrantedAuthority(this.role.getRoleName()));
     }
 
-    //ROLE_ADMIN
+    // ROLE_ADMIN
 
-    //to verify we use only ADMIN
+    // to verify we use only ADMIN
 
     @Override
     public boolean isAccountNonExpired() {

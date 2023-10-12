@@ -13,17 +13,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Token {
+@Data
+public class EmailVerification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id_token;
-    private String token;
+    private Long id_verif;
+    private String varif_token;
     private Date expiryDate;
+    private boolean status;
 
     @OneToOne
-    @JoinColumn(name = "id_user") 
+    @JoinColumn(name = "id_user")
     private _User user;
 }
