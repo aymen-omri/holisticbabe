@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +26,7 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
     private final FileUploadService fileUploadService;
     private final MultimediaRepository multimediaRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDto findUserById(long id) {
@@ -64,6 +66,12 @@ public class UserServiceImpl implements UserService {
             if (user3.isPresent() && !user3.equals(userToUpdate)) {
                 return ResponseEntity.status(409).body("Username taken!");
             }
+            userToUpdate.get().setFirstName(user.getFirstName());
+            userToUpdate.get().setLastName(user.getLastName());
+            userToUpdate.get().setEmail(user.getEmail());
+            userToUpdate.get().setUsername(user.getUsername());
+            userToUpdate.get().setPassword(passwordEncoder.encode(user.getPassword()));
+
             userRepository.save(userToUpdate.get());
             return ResponseEntity.ok().body("User updated successfully!");
         }

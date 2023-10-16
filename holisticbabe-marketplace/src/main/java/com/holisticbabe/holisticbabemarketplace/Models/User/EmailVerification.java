@@ -20,11 +20,15 @@ public class EmailVerification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_verif;
-    private String varif_token;
+    private String verif_token;
     private Date expiryDate;
     private boolean status;
 
     @OneToOne
     @JoinColumn(name = "id_user")
     private _User user;
+
+    public boolean getStatus() {
+        return this.status;
+    }
 }

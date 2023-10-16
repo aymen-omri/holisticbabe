@@ -44,8 +44,8 @@ public class ResetPasswordImpl implements ResetPasswordService {
             Token tokenToSave = new Token();
             tokenToSave.setToken(tokenText);
             tokenToSave.setExpiryDate(this.getExpirationDate());
+            tokenToSave.setUser(user.get());
             Token token = tokenRepository.save(tokenToSave);
-            user.get().setToken(token);
             try {
                 mailService.sendEmail(user.get().getEmail(), "Reset_Password",
                         "Here is your reset token: " + token.getToken());

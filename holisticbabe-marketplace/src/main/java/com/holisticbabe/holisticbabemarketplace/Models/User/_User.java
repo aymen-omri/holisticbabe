@@ -62,7 +62,7 @@ public class _User implements UserDetails {
 
     private boolean enabled;
 
-    @OneToOne(mappedBy = "user" /* , cascade = CascadeType.ALL, orphanRemoval = true */)
+    @OneToOne(mappedBy = "user")
     private Token token;
 
     @NonNull

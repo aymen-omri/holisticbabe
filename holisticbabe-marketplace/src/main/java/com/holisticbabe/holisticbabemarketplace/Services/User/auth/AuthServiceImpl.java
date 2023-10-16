@@ -58,7 +58,7 @@ public class AuthServiceImpl implements AuthService {
         _Role role = roleRepository.findByRoleName(roleName);
         EmailVerification emailVerification = new EmailVerification();
         String randomToken = UUID.randomUUID().toString().substring(0, 20);
-        emailVerification.setVarif_token(randomToken);
+        emailVerification.setVerif_token(randomToken);
         emailVerification.setExpiryDate(new Date(System.currentTimeMillis() + 1000 * 60 * 10));
         emailVerification.setStatus(false);
 
@@ -80,7 +80,7 @@ public class AuthServiceImpl implements AuthService {
 
         try {
             mailService.sendEmail(savedUser.getEmail(), "Email Verification",
-                    "Go to this link this is your token: " + emailVerif.getVarif_token());
+                    "Go to this link this is your token: " + emailVerif.getVerif_token());
             return ResponseEntity.status(200).body("User registered successfully!");
 
         } catch (MessagingException e) {
@@ -109,7 +109,7 @@ public class AuthServiceImpl implements AuthService {
         var claims = JwtClaimsSet.builder()
                 .issuer("self")
                 .issuedAt(Instant.now())
-                .expiresAt(Instant.now().plusSeconds(60 * 30))
+                .expiresAt(Instant.now().plusSeconds(60 * 300))
                 .subject(authentication.getName())
                 .claim("scope", createScope(authentication))
                 .build();

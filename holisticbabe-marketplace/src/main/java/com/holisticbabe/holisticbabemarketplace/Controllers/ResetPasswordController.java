@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/reset-password")
+@RequestMapping("/api/v1/reset-password")
 @RequiredArgsConstructor
 public class ResetPasswordController {
 
