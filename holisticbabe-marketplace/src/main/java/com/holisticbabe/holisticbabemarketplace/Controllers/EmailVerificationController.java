@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.holisticbabe.holisticbabemarketplace.Services.User.EmailVerification.EmailVerificationService;
-import com.holisticbabe.holisticbabemarketplace.Services.User.EmailVerification.VerifyEmailRequest;
+import com.holisticbabe.holisticbabemarketplace.Requests.VerifyEmailRequest;
+import com.holisticbabe.holisticbabemarketplace.Services.EmailVerificationService;
 
 import lombok.RequiredArgsConstructor;
 

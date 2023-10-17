@@ -1,7 +1,7 @@
 package com.holisticbabe.holisticbabemarketplace.Controllers;
 
-import com.holisticbabe.holisticbabemarketplace.Dtos.User.CountryDto;
-import com.holisticbabe.holisticbabemarketplace.Services.User.Country.CountryService;
+import com.holisticbabe.holisticbabemarketplace.Dtos.CountryDto;
+import com.holisticbabe.holisticbabemarketplace.Services.CountryService;
 
 import jakarta.persistence.EntityNotFoundException;
 

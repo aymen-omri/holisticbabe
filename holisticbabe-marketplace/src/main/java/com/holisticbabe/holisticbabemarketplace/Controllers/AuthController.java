@@ -1,8 +1,8 @@
 package com.holisticbabe.holisticbabemarketplace.Controllers;
 
-import com.holisticbabe.holisticbabemarketplace.Services.User.auth.AuthService;
-import com.holisticbabe.holisticbabemarketplace.Services.User.auth.LoginRequest;
-import com.holisticbabe.holisticbabemarketplace.Services.User.auth.RegisterRequest;
+import com.holisticbabe.holisticbabemarketplace.Requests.LoginRequest;
+import com.holisticbabe.holisticbabemarketplace.Requests.RegisterRequest;
+import com.holisticbabe.holisticbabemarketplace.Services.AuthService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

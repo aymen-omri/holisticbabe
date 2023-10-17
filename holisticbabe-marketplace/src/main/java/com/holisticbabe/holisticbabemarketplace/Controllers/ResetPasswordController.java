@@ -1,8 +1,8 @@
 package com.holisticbabe.holisticbabemarketplace.Controllers;
 
-import com.holisticbabe.holisticbabemarketplace.Services.User.ResetPassword.ResetPasswordRequest;
-import com.holisticbabe.holisticbabemarketplace.Services.User.ResetPassword.ResetPasswordService;
-import com.holisticbabe.holisticbabemarketplace.Services.User.ResetPassword.VerifTokenRequest;
+import com.holisticbabe.holisticbabemarketplace.Requests.ResetPasswordRequest;
+import com.holisticbabe.holisticbabemarketplace.Requests.VerifTokenRequest;
+import com.holisticbabe.holisticbabemarketplace.Services.ResetPasswordService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,8 +1,9 @@
 package com.holisticbabe.holisticbabemarketplace.Controllers;
 
-import com.holisticbabe.holisticbabemarketplace.Dtos.User.AddressDto;
-import com.holisticbabe.holisticbabemarketplace.Models.User.Address;
-import com.holisticbabe.holisticbabemarketplace.Services.User.Address.AddressService;
+import com.holisticbabe.holisticbabemarketplace.Dtos.AddressDto;
+import com.holisticbabe.holisticbabemarketplace.Models.Address;
+import com.holisticbabe.holisticbabemarketplace.Services.AddressService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

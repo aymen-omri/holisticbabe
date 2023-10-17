@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.holisticbabe.holisticbabemarketplace.Dtos.User.UserDto;
-import com.holisticbabe.holisticbabemarketplace.Models.User._User;
-import com.holisticbabe.holisticbabemarketplace.Services.User.UserManagement.UserService;
+import com.holisticbabe.holisticbabemarketplace.Dtos.UserDto;
+import com.holisticbabe.holisticbabemarketplace.Models._User;
+import com.holisticbabe.holisticbabemarketplace.Services.UserService;
 
 import lombok.RequiredArgsConstructor;
 
