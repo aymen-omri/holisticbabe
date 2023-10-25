@@ -1,6 +1,6 @@
 package com.holisticbabe.holisticbabemarketplace.Controllers;
 
-import com.holisticbabe.holisticbabemarketplace.Models.Option;
+import com.holisticbabe.holisticbabemarketplace.Models._Option;
 import com.holisticbabe.holisticbabemarketplace.Services.OptionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +16,13 @@ public class OptionController {
     private final OptionService optionService;
 
     @GetMapping("/question/{id}")
-    public List<Option> getQuestionOptions(@PathVariable long id) {
+    public List<_Option> getQuestionOptions(@PathVariable long id) {
         return optionService.getQuestionOptions(id);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Option> getOptionById(@PathVariable long id) {
-        Option option = optionService.getOptionById(id);
+    public ResponseEntity<_Option> getOptionById(@PathVariable long id) {
+        _Option option = optionService.getOptionById(id);
         if (option != null) {
             return ResponseEntity.ok(option);
         } else {
@@ -31,9 +31,9 @@ public class OptionController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addOption(@RequestBody Option option) {
+    public ResponseEntity<?> addOption(@RequestBody _Option option) {
         try {
-            Option addedOption = optionService.addOption(option);
+            _Option addedOption = optionService.addOption(option);
             return ResponseEntity.status(201).body(addedOption);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Problem while inserting option!");
@@ -51,7 +51,7 @@ public class OptionController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateOption(@PathVariable long id, @RequestBody Option option) {
+    public ResponseEntity<String> updateOption(@PathVariable long id, @RequestBody _Option option) {
         ResponseEntity<String> response = optionService.updateOption(id, option);
         if (response.getStatusCode().is2xxSuccessful()) {
             return ResponseEntity.ok("Option updated successfully!");

@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.holisticbabe.holisticbabemarketplace.Models.Option;
+import com.holisticbabe.holisticbabemarketplace.Models._Option;
 import com.holisticbabe.holisticbabemarketplace.Repositories.OptionRepository;
 import com.holisticbabe.holisticbabemarketplace.Services.OptionService;
 
@@ -19,17 +19,17 @@ public class OptionServiceImpl implements OptionService {
     private final OptionRepository optionRepository;
 
     @Override
-    public List<Option> getQuestionOptions(long id) {
+    public List<_Option> getQuestionOptions(long id) {
         return optionRepository.getOptionsByQuestionId(id);
     }
 
     @Override
-    public Option getOptionById(long id) {
+    public _Option getOptionById(long id) {
         return optionRepository.findById(id).orElse(null);
     }
 
     @Override
-    public Option addOption(Option option) {
+    public _Option addOption(_Option option) {
         return optionRepository.save(option);
     }
 
@@ -40,8 +40,8 @@ public class OptionServiceImpl implements OptionService {
 
     @Override
     @Transactional
-    public ResponseEntity<String> updateOption(long id, Option option) {
-        Option optionToUpdate = optionRepository.findById(id).orElse(null);
+    public ResponseEntity<String> updateOption(long id, _Option option) {
+        _Option optionToUpdate = optionRepository.findById(id).orElse(null);
         if (optionToUpdate == null) {
             return ResponseEntity.notFound().build();
         }

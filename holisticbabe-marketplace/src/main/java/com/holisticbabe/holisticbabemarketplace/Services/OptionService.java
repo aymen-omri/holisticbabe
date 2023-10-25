@@ -4,16 +4,16 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
-import com.holisticbabe.holisticbabemarketplace.Models.Option;
+import com.holisticbabe.holisticbabemarketplace.Models._Option;
 
 public interface OptionService {
-    List<Option> getQuestionOptions(long id);
+    List<_Option> getQuestionOptions(long id);
 
-    Option getOptionById(long id);
+    _Option getOptionById(long id);
 
-    Option addOption(Option option);
+    _Option addOption(_Option option);
 
     void deleteOption(long id);
 
-    ResponseEntity<String> updateOption(long id, Option option);
+    ResponseEntity<String> updateOption(long id, _Option option);
 }
