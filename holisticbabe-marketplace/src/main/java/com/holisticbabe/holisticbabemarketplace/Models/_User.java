@@ -56,7 +56,7 @@ public class _User implements UserDetails {
     private BigInteger phoneNumber;
 
     @NonNull
-    @Size(min = 8)
+    @Size(min = 8, max = 200)
     private String password;
 
     private boolean enabled;

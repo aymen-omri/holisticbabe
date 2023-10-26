@@ -45,6 +45,9 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
         if (result > 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Link has already been used or is expired!");
         }
+        if(emailVerification.getStatus() == true){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("This account has already been verified.");
+        }
         // Update the user's verified status to true and save it in DB
         emailVerification.setStatus(true);
         return ResponseEntity.status(HttpStatus.OK).body("Email verified successfully!");
