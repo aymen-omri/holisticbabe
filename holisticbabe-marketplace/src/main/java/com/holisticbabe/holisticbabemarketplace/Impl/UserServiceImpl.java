@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
     public void addProfilePicture(long id, MultipartFile file) {
         try {
             _User user = userRepository.findById(id).get();
-            var imageUrl = fileUploadService.uploadFile(file);
+            var imageUrl = fileUploadService.uploadFile(file , "profile-pictures-holisticbabe");
             Multimedia profilePicture = new Multimedia();
             profilePicture.setName(file.getOriginalFilename());
             profilePicture.setType(file.getContentType());

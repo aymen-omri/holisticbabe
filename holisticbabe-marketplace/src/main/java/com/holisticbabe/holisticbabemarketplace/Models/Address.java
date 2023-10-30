@@ -19,17 +19,26 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id_address;
+    
+    @NonNull
+    private AddressType addressType;
+    
     @NonNull
     private String addressLine1;
+    
     private String addressLine2;
+    
     @NonNull
     private String city;
+    
     @NonNull
     private String postalCode;
+    
     @NonNull
     @ManyToOne
     @JoinColumn(name = "id_user")
     private _User user;
+    
     @NonNull
     @ManyToOne
     @JoinColumn(name = "id_country")

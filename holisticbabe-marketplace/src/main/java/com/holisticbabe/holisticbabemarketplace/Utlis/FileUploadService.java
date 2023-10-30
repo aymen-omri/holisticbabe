@@ -19,8 +19,8 @@ public class FileUploadService {
     
     private final Storage storage;
 
-    public String uploadFile(MultipartFile file) throws IOException {
-        String bucketName = "profile-pictures-holisticbabe";
+    public String uploadFile(MultipartFile file , String bucketName) throws IOException {
+        //String bucketName = "profile-pictures-holisticbabe";
         String fileName = "user_" + UUID.randomUUID() + "_profile.jpg";
         BlobId blobId = BlobId.of(bucketName, fileName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(file.getContentType()).build();
