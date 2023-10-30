@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "holisticbabeproject",
+  "private_key_id": "95e4ed2ac089f9412b7036bc7db1f987a1c799d2",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDg4dD+/COO+PXM\nkd6Rb5NJ5vl9vlta0wk9hu6b27tNRza3otZ9H9RZrKmw7kGJCDawtM691HBc8LLY\ni8gO7wQ1b6Fo8kmHuwB8XsgD1H6LZwKriOzA2UYoaNFRt5H+lj5x3PwlttL4K16G\ny/V+GD33rjzYvo2gqXGvrR8KDmArM6O3Leu/sxSey4zlkcMY0OPvBUkLrfCSf4LY\nchClBgMAeykJMFbLIBJ3dFl4K60knPsTQcDbnW3kwPO5Y2XbjBiZTusF2G6HiwJW\np3V/liUjSBGBFqDkTYa4KQrZBK5UEM6iyLPGwvY9dl0fntoqIXBxw6OZ6SXw4p7k\nCIcCTjbhAgMBAAECggEAAkcrUq/rbMr3E3TNUkAU+ABN2fEcFAwT+YJ0x5Gm4LIm\nWt8ciN0yDZv/Bo6tTYXupuTX/MqKfliGWUT2OHeBnYh1VD6zEbvKVhgwMsC77O3U\n1DfBfTUePbHNIASp5xAuzwC38apb0f1/ekJV6Op2Mzx5u5DXlq9sukS4ziVl4j4h\nb2oA7jPV1QjkYFNDcTTNwhoJ++jTBASmqbRflv3R8zw+XUx7W/EinPg/jJUs0y3t\niAo5h4F/oPcMd6pt11GrjO2j9p0Rd4x3u6W13WrTS+OiewHX8s5jpkz8HbEr2dW+\nk8k3sCM47WPV99D7LBSOqfY60P9c4m8dHZ2vWFDQYQKBgQD0QczxV/DEOmQP+z1I\nTocePdeGLHK0zRjOKygpb/3WNOmTkgdWb6QR2FeF1TS5xslMssyYbV+buxBSw4cg\nQvPJboiz1I3LrNX+57a22Oc/Nq6Vom2Lq35eoDQK2UwJt44r8O+T4xCfT428hxI7\nQPeptwuo5XxKiEg4z6P0B7I0kQKBgQDrsY7tHldv6wq71NOIcWfQ0KLoJuKSKU66\nUvHF51Es0m9eycoH9FWpJJa4zh1/4f7J6ZbrtCvvMcSDkiu0s7pwMhNVByalgi97\naV7t76K3kVTxYR1ENYu9QNQcOaU/0aPhZMGQWh1rRn+md09DpBkNbyGHzOQOubo9\nscCbRPjFUQKBgGKUU/Rru55Wup/AlGEkYGASMXPTaJAT3pkGzfS7YEUdoc+PNirq\nb9tL5zb6b4cy9XdhCjXSnq2pd9MPWu/oVZ/MXpvFg1zaapuwRQvSyrG2jguSPIgM\nNLpYCej+/jNFw7l0ShzznXfOkbOvB+qmM85pM+l8hQdHrW5QTylkGcYhAoGBAKNo\nNhyFpb9taMKzGnmFjqGClP95PipxwyiBKyi3aFs4BojkRFLhfqZHPMwh8uffyqM4\ndS8zeiZbDdDefbjJxt/Uh/yyeYPUT5Ezi+JQ+zJj601ytDS/HwP2N1jeSoiFkyZI\nkb7AC5d9iDDklSrjUY8z1j5tukvPTqVJYK0F06gRAoGAMsseCNFKtgTCm9oCYz1b\nmUHXCBuChv3sEbkdvBMdPrfvZKhf9qPnNpvfj1ydr+yPmAzlT/9nZcEu4Enc0BD7\nWQOV/hlhyfiZJ3sAtPm4bn/+40ET2hgxt9aWj5FDyz0rKQifsWdH4INTyBklE3Y+\nBoqgPSH37f6sb3fDa3qpkzQ=\n-----END PRIVATE KEY-----\n",
+  "client_email": "holisticbabeservice@holisticbabeproject.iam.gserviceaccount.com",
+  "client_id": "114710074310157020799",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/holisticbabeservice%40holisticbabeproject.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
