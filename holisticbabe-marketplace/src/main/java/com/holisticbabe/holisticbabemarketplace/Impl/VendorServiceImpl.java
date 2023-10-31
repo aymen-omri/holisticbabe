@@ -76,14 +76,14 @@ public class VendorServiceImpl implements VendorService {
         vendor.setCompanyName(companyName);
         vendor.setDate(LocalDate.now());
         vendor.setUser(user);
-        Vendor savedVendor = vendorRepository.save(vendor);
+        // Vendor savedVendor = vendorRepository.save(vendor);
 
         // List<Country> countriesToSave = new ArrayList<>();
         for (String country : countries) {
             Country countryToUse = countryRepository.findByCountryName(country).get();
-            countryToUse.setVendor(savedVendor);
-            countryRepository.save(countryToUse);
+            vendor.getCountries().add(countryToUse);
         }
+        Vendor savedVendor = vendorRepository.save(vendor);
 
         for (MultipartFile file : files) {
             try {
@@ -95,9 +95,6 @@ public class VendorServiceImpl implements VendorService {
                 fileToSave.setVendor(savedVendor);
                 multimediaRepository.save(fileToSave);
             } catch (IOException e) {
-                addressRepository.deleteById(savedCompanyAddress.getId_address());
-                vendorRepository.deleteById(savedVendor.getId_vendor());
-
                 return ResponseEntity.status(500).body("Error while uploading files");
             }
         }

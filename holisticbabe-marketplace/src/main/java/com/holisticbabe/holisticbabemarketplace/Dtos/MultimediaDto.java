@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MultimediaDto {
-        private long idMulti;
+        private long id_multi;
         private String url;
         private String type;
         private String name;

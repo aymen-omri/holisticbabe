@@ -4,20 +4,21 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.OneToOne;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
-@Entity
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class Country {
+@Entity
+public class SocialMedia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id_country;
-    @NonNull
-    private String countryName;
+    private long id_social ;
+    
+    private String facebookLink;
+    private String linkedinLink;
+    private String tiktokLink;
+    private String instagramLink;
 
+    @OneToOne
+    private _User user;
 }

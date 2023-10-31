@@ -38,5 +38,5 @@ public class MailService {
        transport.sendMessage(message, message.getAllRecipients());
        transport.close();
    }
-    
+
 }

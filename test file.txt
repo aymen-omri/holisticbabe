@@ -10,6 +10,11 @@ register user:
 
 login user : 
 {
-    "email": "aymenomri14.56@mail.com",
+    "email": "aymenomri14.56@gmail.com",
     "password":123456789
+}
+
+country:
+{
+"countryName":"Tunisie"
 }

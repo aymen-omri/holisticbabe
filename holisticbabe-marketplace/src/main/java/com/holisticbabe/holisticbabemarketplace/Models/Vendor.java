@@ -9,7 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,7 +31,7 @@ public class Vendor {
     private LocalDate date ;
     private Boolean approved;
 
-    @OneToMany(mappedBy = "vendor")
+    @ManyToMany
     List<Country> countries = new ArrayList<>();
 
     @OneToOne
