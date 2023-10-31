@@ -1,4 +1,4 @@
-package com.holisticbabe.holisticbabemarketplace.Services.PromotionService;
+package com.holisticbabe.holisticbabemarketplace.Services;
 
 import com.holisticbabe.holisticbabemarketplace.Models.Promotion;
 

@@ -3,6 +3,7 @@ package com.holisticbabe.holisticbabemarketplace.Dtos;
 import com.holisticbabe.holisticbabemarketplace.Models.Product;
 import com.holisticbabe.holisticbabemarketplace.Models.Category;
 import com.holisticbabe.holisticbabemarketplace.Models.Review;
+import com.holisticbabe.holisticbabemarketplace.Requests.ProductShop;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -27,15 +28,19 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findBySize(String size);
     List<Product> findByName(String name);
 
-    @Query("SELECT  p, m.name AS imageName, c.name AS categoryName, r.value AS rating, pro.discount AS discountPrice, " +
-            "p.name AS productName, p.price AS productPrice, p.size AS productSize " +
+    @Query("SELECT new com.holisticbabe.holisticbabemarketplace.Requests.ProductShop(" +
+            "p.id_product, p.name, p.price, p.size, c.name, COALESCE(AVG(r.value), 0), " +
+            "COALESCE(MAX(pro.discount), 0), (SELECT i.url FROM Multimedia i WHERE i.product = p ORDER BY i.id_multi LIMIT 1)) " +
             "FROM Product p " +
-            "JOIN p.images m " +
             "JOIN p.category c " +
-            "JOIN  p.reviews r " +
-            "JOIN  p.promotions pro "
-            )
-    List<Product> listProductShop();
+            "LEFT JOIN p.reviews r " +
+            "LEFT JOIN p.promotions pro " +
+            "GROUP BY p.id_product, p.name, p.price, p.size, c.name")
+    List<ProductShop> listProductShop();
+
+
+
+
 
 
 

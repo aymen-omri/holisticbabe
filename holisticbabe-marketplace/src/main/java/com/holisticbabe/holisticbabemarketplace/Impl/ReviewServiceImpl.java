@@ -1,23 +1,22 @@
-package com.holisticbabe.holisticbabemarketplace.Services.ReviewService;
+package com.holisticbabe.holisticbabemarketplace.Impl;
 
 import com.holisticbabe.holisticbabemarketplace.Dtos.ProductRepository;
 import com.holisticbabe.holisticbabemarketplace.Dtos.ReviewRepository;
 import com.holisticbabe.holisticbabemarketplace.Models.Product;
 import com.holisticbabe.holisticbabemarketplace.Models.Review;
+import com.holisticbabe.holisticbabemarketplace.Services.ReviewService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
-import java.util.Optional;
 
 import static java.lang.Math.round;
 
 @Service
 @Slf4j
-public class ReviewServiceImpl implements  ReviewService{
+public class ReviewServiceImpl implements ReviewService {
 
     @Autowired
     private ReviewRepository reviewRepository;

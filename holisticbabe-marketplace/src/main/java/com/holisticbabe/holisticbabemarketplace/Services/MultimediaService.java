@@ -1,4 +1,4 @@
-package com.holisticbabe.holisticbabemarketplace.Services.MultimediaService;
+package com.holisticbabe.holisticbabemarketplace.Services;
 
 import com.holisticbabe.holisticbabemarketplace.Models.Product;
 import org.springframework.http.ResponseEntity;

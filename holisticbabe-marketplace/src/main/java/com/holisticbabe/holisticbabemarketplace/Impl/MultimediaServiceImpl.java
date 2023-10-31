@@ -1,9 +1,10 @@
-package com.holisticbabe.holisticbabemarketplace.Services.MultimediaService;
+package com.holisticbabe.holisticbabemarketplace.Impl;
 
 import com.google.cloud.storage.*;
 import com.holisticbabe.holisticbabemarketplace.Dtos.MultimediaRepository;
 import com.holisticbabe.holisticbabemarketplace.Models.Product;
 import com.holisticbabe.holisticbabemarketplace.Models.Multimedia;
+import com.holisticbabe.holisticbabemarketplace.Services.MultimediaService;
 import com.holisticbabe.holisticbabemarketplace.Utils.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -1,10 +1,7 @@
 package com.holisticbabe.holisticbabemarketplace.Models;
 
-import com.holisticbabe.holisticbabemarketplace.Models.User._User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 

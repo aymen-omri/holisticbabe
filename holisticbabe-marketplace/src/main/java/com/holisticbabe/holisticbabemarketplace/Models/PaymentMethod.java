@@ -1,10 +1,11 @@
-package com.holisticbabe.holisticbabemarketplace.Models.User;
+package com.holisticbabe.holisticbabemarketplace.Models;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
 
 import com.holisticbabe.holisticbabemarketplace.Models.Category;
 
+import com.holisticbabe.holisticbabemarketplace.Models._User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

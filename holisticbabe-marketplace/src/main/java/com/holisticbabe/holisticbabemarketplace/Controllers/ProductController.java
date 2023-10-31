@@ -6,10 +6,11 @@ import com.holisticbabe.holisticbabemarketplace.Models.Product;
 import com.holisticbabe.holisticbabemarketplace.Models.Category;
 import com.holisticbabe.holisticbabemarketplace.Models.Multimedia;
 import com.holisticbabe.holisticbabemarketplace.Models.Review;
-import com.holisticbabe.holisticbabemarketplace.Services.AdminCategoryService.CategoryService;
-import com.holisticbabe.holisticbabemarketplace.Services.MultimediaService.MultimediaService;
-import com.holisticbabe.holisticbabemarketplace.Services.ProductService.ProductService;
-import com.holisticbabe.holisticbabemarketplace.Services.ReviewService.ReviewService;
+import com.holisticbabe.holisticbabemarketplace.Requests.ProductShop;
+import com.holisticbabe.holisticbabemarketplace.Services.CategoryService;
+import com.holisticbabe.holisticbabemarketplace.Services.MultimediaService;
+import com.holisticbabe.holisticbabemarketplace.Services.ProductService;
+import com.holisticbabe.holisticbabemarketplace.Services.ReviewService;
 import com.holisticbabe.holisticbabemarketplace.Utils.HBUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -282,8 +283,8 @@ public class ProductController {
     }
 
     @GetMapping("/getShopProduct")
-    public ResponseEntity<List<Product>>getshop() {
-        return ResponseEntity.ok(productService.getProductShop());
+    public ResponseEntity<List<ProductShop>> getshop() {
+        return ResponseEntity.ok(productService.listProductShop());
     }
 
 

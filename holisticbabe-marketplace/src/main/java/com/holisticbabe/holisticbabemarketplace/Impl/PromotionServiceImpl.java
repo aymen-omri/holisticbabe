@@ -1,10 +1,11 @@
-package com.holisticbabe.holisticbabemarketplace.Services.PromotionService;
+package com.holisticbabe.holisticbabemarketplace.Impl;
 
 import com.holisticbabe.holisticbabemarketplace.Dtos.ProductRepository;
 import com.holisticbabe.holisticbabemarketplace.Dtos.PromotionRepository;
 import com.holisticbabe.holisticbabemarketplace.Models.Product;
 import com.holisticbabe.holisticbabemarketplace.Models.Promotion;
 
+import com.holisticbabe.holisticbabemarketplace.Services.PromotionService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

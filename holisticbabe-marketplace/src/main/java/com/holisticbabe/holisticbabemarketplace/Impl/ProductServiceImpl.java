@@ -1,11 +1,12 @@
-package com.holisticbabe.holisticbabemarketplace.Services.ProductService;
+package com.holisticbabe.holisticbabemarketplace.Impl;
 
 import com.google.cloud.storage.Storage;
 import com.holisticbabe.holisticbabemarketplace.Dtos.MultimediaRepository;
 import com.holisticbabe.holisticbabemarketplace.Dtos.ProductRepository;
 import com.holisticbabe.holisticbabemarketplace.Models.Product;
 import com.holisticbabe.holisticbabemarketplace.Models.Multimedia;
-import com.holisticbabe.holisticbabemarketplace.Models.Review;
+import com.holisticbabe.holisticbabemarketplace.Requests.ProductShop;
+import com.holisticbabe.holisticbabemarketplace.Services.ProductService;
 import com.holisticbabe.holisticbabemarketplace.Utils.FileService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -15,13 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import org.springframework.data.domain.Pageable;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -225,13 +222,10 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+
     @Override
-    public List<Product> getProductShop() {
+    public List<ProductShop> listProductShop() {
         return productRepository.listProductShop();
     }
-
-
-
-
 }
 

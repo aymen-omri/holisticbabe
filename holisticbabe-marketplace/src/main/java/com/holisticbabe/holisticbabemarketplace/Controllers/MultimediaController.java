@@ -1,7 +1,7 @@
 package com.holisticbabe.holisticbabemarketplace.Controllers;
 
 
-import com.holisticbabe.holisticbabemarketplace.Services.MultimediaService.MultimediaService;
+import com.holisticbabe.holisticbabemarketplace.Services.MultimediaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

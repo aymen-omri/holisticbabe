@@ -1,6 +1,6 @@
 package com.holisticbabe.holisticbabemarketplace.Dtos;
 
-import com.holisticbabe.holisticbabemarketplace.Models.User._Role;
+import com.holisticbabe.holisticbabemarketplace.Models._Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

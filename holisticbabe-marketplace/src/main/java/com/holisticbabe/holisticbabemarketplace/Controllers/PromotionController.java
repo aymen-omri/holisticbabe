@@ -1,7 +1,7 @@
 package com.holisticbabe.holisticbabemarketplace.Controllers;
 
 import com.holisticbabe.holisticbabemarketplace.Models.Promotion;
-import com.holisticbabe.holisticbabemarketplace.Services.PromotionService.PromotionService;
+import com.holisticbabe.holisticbabemarketplace.Services.PromotionService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

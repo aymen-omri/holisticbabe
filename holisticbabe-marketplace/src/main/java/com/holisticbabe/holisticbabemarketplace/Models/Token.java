@@ -1,4 +1,4 @@
-package com.holisticbabe.holisticbabemarketplace.Models.User;
+package com.holisticbabe.holisticbabemarketplace.Models;
 
 import java.time.LocalDate;
 

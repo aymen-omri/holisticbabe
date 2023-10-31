@@ -1,7 +1,7 @@
 package com.holisticbabe.holisticbabemarketplace.Controllers;
 
 import com.holisticbabe.holisticbabemarketplace.Models.Category;
-import com.holisticbabe.holisticbabemarketplace.Services.AdminCategoryService.CategoryService;
+import com.holisticbabe.holisticbabemarketplace.Services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

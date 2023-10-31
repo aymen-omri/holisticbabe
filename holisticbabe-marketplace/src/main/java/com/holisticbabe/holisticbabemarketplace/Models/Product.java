@@ -6,8 +6,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.holisticbabe.holisticbabemarketplace.Models.User._User;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -55,7 +53,7 @@ public class Product {
     @ManyToMany
     private  List<Promotion> promotions;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    @OneToMany( mappedBy = "product",fetch = FetchType.LAZY)
     private List<Multimedia> images;
 
     @ManyToOne

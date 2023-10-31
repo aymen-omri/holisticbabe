@@ -1,4 +1,4 @@
-package com.holisticbabe.holisticbabemarketplace.Services.AdminCategoryService;
+package com.holisticbabe.holisticbabemarketplace.Services;
 
 import com.holisticbabe.holisticbabemarketplace.Models.Category;
 

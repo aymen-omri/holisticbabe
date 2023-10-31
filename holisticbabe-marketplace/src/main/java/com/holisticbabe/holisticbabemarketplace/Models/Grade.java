@@ -1,8 +1,5 @@
 package com.holisticbabe.holisticbabemarketplace.Models;
 
-import com.holisticbabe.holisticbabemarketplace.Models.Course;
-import com.holisticbabe.holisticbabemarketplace.Models.User._User;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

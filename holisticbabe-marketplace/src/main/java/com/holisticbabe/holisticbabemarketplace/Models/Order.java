@@ -3,9 +3,6 @@ package com.holisticbabe.holisticbabemarketplace.Models;
 
 import java.math.BigDecimal;
 
-import com.holisticbabe.holisticbabemarketplace.Models.User.Address;
-import com.holisticbabe.holisticbabemarketplace.Models.User.PaymentMethod;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

@@ -1,7 +1,8 @@
-package com.holisticbabe.holisticbabemarketplace.Services.ProductService;
+package com.holisticbabe.holisticbabemarketplace.Services;
 
 import com.holisticbabe.holisticbabemarketplace.Models.Product;
 import com.holisticbabe.holisticbabemarketplace.Models.Multimedia;
+import com.holisticbabe.holisticbabemarketplace.Requests.ProductShop;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.print.Pageable;
@@ -31,7 +32,6 @@ public interface ProductService {
     List<Product> getProductsBySize(String size) ;
     List<Product> searchProductsByName(String name);
 
-    List<Product> getProductShop();
-
+    List<ProductShop> listProductShop();
 
     }

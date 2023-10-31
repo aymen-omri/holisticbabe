@@ -1,10 +1,7 @@
-package com.holisticbabe.holisticbabemarketplace.Models.User;
+package com.holisticbabe.holisticbabemarketplace.Models;
 
 import java.math.BigInteger;
 
-import com.holisticbabe.holisticbabemarketplace.Models.Multimedia;
-
-import com.holisticbabe.holisticbabemarketplace.Models.Wishlist;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

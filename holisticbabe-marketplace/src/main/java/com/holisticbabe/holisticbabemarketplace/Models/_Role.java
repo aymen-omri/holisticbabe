@@ -1,4 +1,4 @@
-package com.holisticbabe.holisticbabemarketplace.Models.User;
+package com.holisticbabe.holisticbabemarketplace.Models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PaymentType {
+public class _Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id_payment_type;
-    private String typeName;
+    private long id_role;
+    private String roleName;
 
 }

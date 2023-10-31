@@ -1,4 +1,4 @@
-package com.holisticbabe.holisticbabemarketplace.Models.User;
+package com.holisticbabe.holisticbabemarketplace.Models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

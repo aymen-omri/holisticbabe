@@ -1,7 +1,7 @@
 package com.holisticbabe.holisticbabemarketplace.Controllers;
 
 import com.holisticbabe.holisticbabemarketplace.Models.Wishlist;
-import com.holisticbabe.holisticbabemarketplace.Services.WishlistService.WishlistService;
+import com.holisticbabe.holisticbabemarketplace.Services.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

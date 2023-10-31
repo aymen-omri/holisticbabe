@@ -1,8 +1,7 @@
 package com.holisticbabe.holisticbabemarketplace.Controllers;
 
 import com.holisticbabe.holisticbabemarketplace.Models.Review;
-import com.holisticbabe.holisticbabemarketplace.Services.ProductService.ProductService;
-import com.holisticbabe.holisticbabemarketplace.Services.ReviewService.ReviewService;
+import com.holisticbabe.holisticbabemarketplace.Services.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

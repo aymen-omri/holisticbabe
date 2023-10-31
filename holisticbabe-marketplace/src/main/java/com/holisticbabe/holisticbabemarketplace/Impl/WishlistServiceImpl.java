@@ -1,10 +1,11 @@
-package com.holisticbabe.holisticbabemarketplace.Services.WishlistService;
+package com.holisticbabe.holisticbabemarketplace.Impl;
 
 import com.holisticbabe.holisticbabemarketplace.Dtos.ProductRepository;
 import com.holisticbabe.holisticbabemarketplace.Dtos.UserRepository;
 import com.holisticbabe.holisticbabemarketplace.Dtos.WishlistRepository;
 import com.holisticbabe.holisticbabemarketplace.Models.Product;
 import com.holisticbabe.holisticbabemarketplace.Models.Wishlist;
+import com.holisticbabe.holisticbabemarketplace.Services.WishlistService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
