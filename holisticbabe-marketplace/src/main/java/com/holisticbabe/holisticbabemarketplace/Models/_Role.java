@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Entity
 @Data
@@ -16,6 +17,7 @@ public class _Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id_role;
+    @NonNull
     private String roleName;
 
 }

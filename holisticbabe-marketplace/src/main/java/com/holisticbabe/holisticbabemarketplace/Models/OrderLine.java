@@ -1,12 +1,6 @@
 package com.holisticbabe.holisticbabemarketplace.Models;
 
-
 import java.math.BigDecimal;
-
-import com.holisticbabe.holisticbabemarketplace.Models.Bootcamp;
-import com.holisticbabe.holisticbabemarketplace.Models.Course;
-import com.holisticbabe.holisticbabemarketplace.Models.Order;
-import com.holisticbabe.holisticbabemarketplace.Models.Product;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,8 +25,8 @@ public class OrderLine {
     private BigDecimal price;
 
     @ManyToOne
-    @JoinColumn(name ="id_order")
-    private Order order;
+    @JoinColumn(name = "id_order")
+    private _Order order;
 
     @ManyToOne
     @JoinColumn(name = "bootcamp_id")

@@ -1,0 +1,20 @@
+register user: 
+{
+    "firstName": "Aymen",
+    "lastName": "Omri",
+    "username": "aymenomri",
+    "email": "aymenomri14.56@gmail.com",
+    "phoneNumber": 1234567890,
+    "password":123456789
+}
+
+login user : 
+{
+    "email": "aymenomri14.56@gmail.com",
+    "password":123456789
+}
+
+country:
+{
+"countryName":"Tunisie"
+}

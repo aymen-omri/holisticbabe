@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public interface MultimediaService {
     void uploadImage(MultipartFile file, Product product) throws IOException;
-    ResponseEntity<String> deleteMultimedia(Long id);
 
+    ResponseEntity<String> deleteMultimedia(Long id);
 
 }

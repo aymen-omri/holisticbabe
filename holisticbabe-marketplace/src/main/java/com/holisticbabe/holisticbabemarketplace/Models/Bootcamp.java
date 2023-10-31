@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import java.util.List;
 
+
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,14 +14,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@DynamicUpdate
-@DynamicInsert
+@AllArgsConstructor
+@NoArgsConstructor
 public class Bootcamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

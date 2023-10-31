@@ -1,18 +1,18 @@
 package com.holisticbabe.holisticbabemarketplace.Models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.holisticbabe.holisticbabemarketplace.Models.Product;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Data
-@DynamicUpdate
-@DynamicInsert
+@AllArgsConstructor
+@NoArgsConstructor
 public class Multimedia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,4 +26,10 @@ public class Multimedia {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+}
+    @ManyToOne
+    private Consultant consultant;
+
+    @ManyToOne
+    private Vendor vendor ;
 }

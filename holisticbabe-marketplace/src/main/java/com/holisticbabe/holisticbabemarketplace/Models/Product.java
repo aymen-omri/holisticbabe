@@ -60,5 +60,4 @@ public class Product {
     @JoinColumn(name = "id_user")
     private _User owner;
 
-
 }
