@@ -1,7 +1,7 @@
 package com.holisticbabe.holisticbabemarketplace.Impl;
 
-import com.holisticbabe.holisticbabemarketplace.Dtos.CategoryRepository;
-import com.holisticbabe.holisticbabemarketplace.Dtos.ProductRepository;
+import com.holisticbabe.holisticbabemarketplace.Repositories.CategoryRepository;
+import com.holisticbabe.holisticbabemarketplace.Repositories.ProductRepository;
 import com.holisticbabe.holisticbabemarketplace.Models.Product;
 import com.holisticbabe.holisticbabemarketplace.Models.Category;
 import com.holisticbabe.holisticbabemarketplace.Services.CategoryService;

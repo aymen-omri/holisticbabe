@@ -1,12 +1,13 @@
 package com.holisticbabe.holisticbabemarketplace.Impl;
 
-import com.google.cloud.storage.*;
-import com.holisticbabe.holisticbabemarketplace.Dtos.MultimediaRepository;
+import com.holisticbabe.holisticbabemarketplace.Repositories.MultimediaRepository;
 import com.holisticbabe.holisticbabemarketplace.Models.Product;
 import com.holisticbabe.holisticbabemarketplace.Models.Multimedia;
 import com.holisticbabe.holisticbabemarketplace.Services.MultimediaService;
-import com.holisticbabe.holisticbabemarketplace.Utils.FileService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.holisticbabe.holisticbabemarketplace.Utlis.FileUploadService;
+
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,24 +15,22 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @Service
+@RequiredArgsConstructor
 public class MultimediaServiceImpl implements MultimediaService {
+    
+    private final MultimediaRepository multimediaRepository;
+    private final  FileUploadService fileUploadService ;
 
-    @Autowired
-    private FileService fileService;
-
-    @Autowired
-    private MultimediaRepository multimediaRepository;
-
-    @Autowired
-    Storage storage;
     @Override
     public void uploadImage(MultipartFile file, Product product) throws IOException {
         // Delegate the file upload to the FileService
-        fileService.uploadFile(file);
+        //fileService.uploadFile(file);
 
-        // Now, you can handle any additional logic for Multimedia here, like saving metadata
+        // Now, you can handle any additional logic for Multimedia here, like saving
+        // metadata
         Multimedia multimedia = new Multimedia();
-        multimedia.setUrl("https://storage.googleapis.com/holisticbabebacket/" + file.getOriginalFilename());
+        String url = fileUploadService.uploadFile(file , "product-multimedia");
+        multimedia.setUrl(url);
         multimedia.setName(file.getOriginalFilename());
         multimedia.setType(file.getContentType());
         multimedia.setProduct(product); // Associate the multimedia with the provided product
@@ -44,6 +43,5 @@ public class MultimediaServiceImpl implements MultimediaService {
         multimediaRepository.deleteById(id);
         return null;
     }
-
 
 }

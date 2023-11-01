@@ -26,9 +26,13 @@ public class ReviewController {
         return reviewService.getReviewById(reviewId);
     }
 
-    @PostMapping("/")
-    public Review createReview(@RequestBody Review review) {
-        return reviewService.createReview(review);
+    @PostMapping("/add")
+    public ResponseEntity<?> createReview(@RequestBody Review review) {
+        try{
+            return ResponseEntity.ok(reviewService.createReview(review));
+        }catch(Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
     }
 
     @PutMapping("/{reviewId}")

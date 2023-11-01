@@ -1,4 +1,4 @@
-package com.holisticbabe.holisticbabemarketplace.Dtos;
+package com.holisticbabe.holisticbabemarketplace.Repositories;
 
 
 import com.holisticbabe.holisticbabemarketplace.Models.Course;

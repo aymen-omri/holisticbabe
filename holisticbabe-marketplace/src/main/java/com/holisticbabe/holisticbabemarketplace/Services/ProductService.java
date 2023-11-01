@@ -5,7 +5,6 @@ import com.holisticbabe.holisticbabemarketplace.Models.Multimedia;
 import com.holisticbabe.holisticbabemarketplace.Requests.ProductShop;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.print.Pageable;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
@@ -15,7 +14,7 @@ public interface ProductService {
 
     Product getProductById(Long id);
 
-    Product createProduct(Product product);
+    Product createProduct(Product product , Long id_user); 
 
     void deleteProduct(Long id);
 

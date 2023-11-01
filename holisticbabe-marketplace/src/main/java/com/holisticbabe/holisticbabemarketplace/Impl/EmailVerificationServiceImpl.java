@@ -64,6 +64,9 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
         if (emailVerification == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Email Verification Object!");
         }
+        if(emailVerification.getStatus() == true){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("This account has already been verified.");
+        }
         // Generate a new token and send it to the user
         String tokenText = UUID.randomUUID().toString().substring(0, 30);
         emailVerification.setExpiryDate(new Date(System.currentTimeMillis() + 1000 * 60 * 10));

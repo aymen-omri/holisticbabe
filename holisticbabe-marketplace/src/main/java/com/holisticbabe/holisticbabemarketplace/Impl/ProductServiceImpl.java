@@ -1,18 +1,19 @@
 package com.holisticbabe.holisticbabemarketplace.Impl;
 
-import com.google.cloud.storage.Storage;
-import com.holisticbabe.holisticbabemarketplace.Dtos.MultimediaRepository;
-import com.holisticbabe.holisticbabemarketplace.Dtos.ProductRepository;
+import com.holisticbabe.holisticbabemarketplace.Repositories.MultimediaRepository;
+import com.holisticbabe.holisticbabemarketplace.Repositories.ProductRepository;
+import com.holisticbabe.holisticbabemarketplace.Repositories.UserRepository;
 import com.holisticbabe.holisticbabemarketplace.Models.Product;
+import com.holisticbabe.holisticbabemarketplace.Models._User;
 import com.holisticbabe.holisticbabemarketplace.Models.Multimedia;
 import com.holisticbabe.holisticbabemarketplace.Requests.ProductShop;
 import com.holisticbabe.holisticbabemarketplace.Services.ProductService;
-import com.holisticbabe.holisticbabemarketplace.Utils.FileService;
+import com.holisticbabe.holisticbabemarketplace.Utlis.FileUploadService;
+
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,18 +23,14 @@ import java.util.*;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
-
-    @Autowired
-    private ProductRepository productRepository;
-    @Autowired
-    private MultimediaRepository multimediaRepository;
-    @Autowired
-    private Storage storage;
-    @Autowired
-    private FileService fileService;
-
+    private final ProductRepository productRepository;
+    // private final FileService fileService;
+    private final FileUploadService fileUploadService;
+    private final UserRepository userRepository;
+    private final MultimediaRepository multimediaRepository;
 
     @Override
     public List<Product> getAllProducts() {
@@ -56,8 +53,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product createProduct(Product product) {
+    public Product createProduct(Product product, Long id_user) {
         try {
+            _User user = userRepository.findById(id_user).orElse(null);
+            if (user == null) {
+                return null;
+            }
+            product.setOwner(user);
             Product savedProduct = productRepository.save(product);
             log.info("Product created successfully. Product ID: {}", savedProduct.getId_product());
             return savedProduct;
@@ -99,14 +101,15 @@ public class ProductServiceImpl implements ProductService {
     public Product addNewImage(Long productId, MultipartFile newImage) throws IOException {
         try {
             Product product = getProductById(productId);
-            fileService.uploadFile(newImage);
+            // fileService.uploadFile(newImage);
             Multimedia newMultimedia = new Multimedia();
+            String url = fileUploadService.uploadFile(newImage, "product-multimedia");
             newMultimedia.setName(newImage.getOriginalFilename());
             newMultimedia.setType(newImage.getContentType());
-            newMultimedia.setUrl("https://storage.googleapis.com/holisticbabebacket/" + newImage.getOriginalFilename());
+            newMultimedia.setUrl(url);
             newMultimedia.setProduct(product);
-            product.getImages().add(newMultimedia);
-            return productRepository.save(product);
+            multimediaRepository.save(newMultimedia);
+            return productRepository.findById(productId).get();
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("An error occurred while adding a new image to the product.");
@@ -222,10 +225,8 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-
     @Override
     public List<ProductShop> listProductShop() {
         return productRepository.listProductShop();
     }
 }
-

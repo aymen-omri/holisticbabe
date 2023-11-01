@@ -1,6 +1,5 @@
 package com.holisticbabe.holisticbabemarketplace.Models;
 
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -44,16 +43,18 @@ public class Product {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "id_category")
     private Category category;
 
-   @OneToMany(fetch = FetchType.LAZY)
-   private List<Review> reviews;
+    @JsonIgnore
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    private List<Review> reviews;
 
     @ManyToMany
-    private  List<Promotion> promotions;
+    private List<Promotion> promotions;
 
-    @OneToMany( mappedBy = "product",fetch = FetchType.LAZY)
+    @JsonIgnore
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<Multimedia> images;
 
     @ManyToOne

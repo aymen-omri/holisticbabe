@@ -1,8 +1,8 @@
 package com.holisticbabe.holisticbabemarketplace.Impl;
 
-import com.holisticbabe.holisticbabemarketplace.Dtos.ProductRepository;
-import com.holisticbabe.holisticbabemarketplace.Dtos.UserRepository;
-import com.holisticbabe.holisticbabemarketplace.Dtos.WishlistRepository;
+import com.holisticbabe.holisticbabemarketplace.Repositories.ProductRepository;
+import com.holisticbabe.holisticbabemarketplace.Repositories.UserRepository;
+import com.holisticbabe.holisticbabemarketplace.Repositories.WishlistRepository;
 import com.holisticbabe.holisticbabemarketplace.Models.Product;
 import com.holisticbabe.holisticbabemarketplace.Models.Wishlist;
 import com.holisticbabe.holisticbabemarketplace.Services.WishlistService;

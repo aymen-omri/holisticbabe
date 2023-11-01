@@ -9,14 +9,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/api/categories")
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
-
-
 
     @GetMapping
     public List<Category> getAll() {
@@ -34,9 +31,13 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<Category> createCategory(@RequestBody Category category) {
-        Category createdCategory = categoryService.save(category);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdCategory);
+    public ResponseEntity<?> createCategory(@RequestBody Category category) {
+        try {
+            Category createdCategory = categoryService.save(category);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdCategory);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
@@ -71,11 +72,4 @@ public class CategoryController {
         return ResponseEntity.ok(productCount);
     }
 
-
 }
-
-
-
-
-
-

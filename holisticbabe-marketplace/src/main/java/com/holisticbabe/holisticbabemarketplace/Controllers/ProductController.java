@@ -1,7 +1,6 @@
 package com.holisticbabe.holisticbabemarketplace.Controllers;
 
 import com.holisticbabe.holisticbabemarketplace.Constants.HBConstants;
-import com.holisticbabe.holisticbabemarketplace.Dtos.MultimediaRepository;
 import com.holisticbabe.holisticbabemarketplace.Models.Product;
 import com.holisticbabe.holisticbabemarketplace.Models.Category;
 import com.holisticbabe.holisticbabemarketplace.Models.Multimedia;
@@ -12,7 +11,9 @@ import com.holisticbabe.holisticbabemarketplace.Services.MultimediaService;
 import com.holisticbabe.holisticbabemarketplace.Services.ProductService;
 import com.holisticbabe.holisticbabemarketplace.Services.ReviewService;
 import com.holisticbabe.holisticbabemarketplace.Utils.HBUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,21 +27,13 @@ import static org.hibernate.query.sqm.tree.SqmNode.log;
 
 @RestController
 @RequestMapping("/api/products")
+@RequiredArgsConstructor
 public class ProductController {
 
-    @Autowired
-    private ProductService productService;
-
-    @Autowired
-    private MultimediaService multimediaService;
-
-    @Autowired
-    private CategoryService categoryService;
-
-    @Autowired
-    private MultimediaRepository multimediaRepository;
-    @Autowired
-    private ReviewService reviewService;
+    private final ProductService productService;
+    private final MultimediaService multimediaService;
+    private final CategoryService categoryService;
+    private final ReviewService reviewService;
 
     @GetMapping
     public List<Product> getAllProducts() {
@@ -55,15 +48,15 @@ public class ProductController {
         } else {
             return ResponseEntity.notFound().build();
         }
-   }
+    }
 
-    @PostMapping
+    @PostMapping("/user/{id_user}")
     public ResponseEntity<String> createProductWithImages(
+            @PathVariable("id_user") Long id_user,
             @ModelAttribute Product product,
             @RequestParam("categoryId") Long categoryId,
             @RequestParam("categoryName") String categoryName,
-            @RequestPart MultipartFile image
-    ) throws IOException {
+            @RequestPart List<MultipartFile> images){
         try {
             if (categoryId == null) {
                 return ResponseEntity.badRequest().body("Category ID is required.");
@@ -71,7 +64,8 @@ public class ProductController {
             Category existingCategory = categoryService.getById(categoryId);
             if (existingCategory == null) {
                 if (categoryName == null || categoryName.isEmpty()) {
-                    return ResponseEntity.badRequest().body("Category with ID " + categoryId + " does not exist, and Category Name is required.");
+                    return ResponseEntity.badRequest()
+                            .body("Category with ID " + categoryId + " does not exist, and Category Name is required.");
                 }
 
                 existingCategory = new Category();
@@ -80,46 +74,57 @@ public class ProductController {
             product.setCategory(existingCategory);
             log.info(existingCategory);
 
-            Product savedProduct = productService.createProduct(product);
+            Product savedProduct = productService.createProduct(product,id_user);
             log.info(savedProduct);
-            multimediaService.uploadImage(image, savedProduct);
+            images.forEach(img -> {
+                try {
+                    multimediaService.uploadImage(img, savedProduct);
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            });
 
             return ResponseEntity.ok("Product with image created successfully");
         } catch (Exception e) {
             e.printStackTrace();
-            return HBUtils.getResponseEntity(HBConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+            //return HBUtils.getResponseEntity(HBConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(500).body(e.getMessage());
         }
     }
-
 
     /**
-   @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        // Créez un nouveau produit
-        Product newProduct = productService.createProduct(product);
-        return ResponseEntity.ok(newProduct);
-    }
-
-
-    @PostMapping("/{productId}/uploadImage")
-    public ResponseEntity<String> uploadImage(
-            @PathVariable Long productId,
-            @RequestParam MultipartFile file
-
-         ) throws IOException {
-
-        Product product = productService.getProductById(productId);
-        if (product == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
-        }
-
-        // Utilisez le service File pour gérer l'upload de l'image au produit
-        fileService.uploadImage(file,product);
-
-        return ResponseEntity.ok("Image uploaded successfully");
-    }
-
-*/
+     * @PostMapping
+     *              public ResponseEntity<Product> createProduct(@RequestBody
+     *              Product product) {
+     *              // Créez un nouveau produit
+     *              Product newProduct = productService.createProduct(product);
+     *              return ResponseEntity.ok(newProduct);
+     *              }
+     * 
+     * 
+     *              @PostMapping("/{productId}/uploadImage")
+     *              public ResponseEntity<String> uploadImage(
+     * @PathVariable Long productId,
+     * @RequestParam MultipartFile file
+     * 
+     *               ) throws IOException {
+     * 
+     *               Product product = productService.getProductById(productId);
+     *               if (product == null) {
+     *               return
+     *               ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not
+     *               found");
+     *               }
+     * 
+     *               // Utilisez le service File pour gérer l'upload de l'image au
+     *               produit
+     *               fileService.uploadImage(file,product);
+     * 
+     *               return ResponseEntity.ok("Image uploaded successfully");
+     *               }
+     * 
+     */
 
     @PutMapping("/{id}")
     public ResponseEntity<String> updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
@@ -135,8 +140,7 @@ public class ProductController {
     @PostMapping("/{productId}/addImage")
     public ResponseEntity<Product> addNewImage(
             @PathVariable Long productId,
-            @RequestParam("newImage") MultipartFile newImage
-    ) throws IOException {
+            @RequestParam("newImage") MultipartFile newImage) throws IOException {
         Product updatedProduct = productService.addNewImage(productId, newImage);
         return ResponseEntity.ok(updatedProduct);
     }
@@ -150,6 +154,7 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
         if (productService.productExists(id)) {
@@ -160,26 +165,28 @@ public class ProductController {
         }
     }
 
-  /**  @GetMapping("/popular")
-    public ResponseEntity<List<Product>> getPopularProducts(@RequestParam("limit") int limit) {
-        List<Product> popularProducts = productService.getPopularProducts(limit);
-        if (!popularProducts.isEmpty()) {
-            return ResponseEntity.ok(popularProducts);
+    /**
+     * @GetMapping("/popular")
+     * public ResponseEntity<List<Product>>
+     * getPopularProducts(@RequestParam("limit") int limit) {
+     * List<Product> popularProducts = productService.getPopularProducts(limit);
+     * if (!popularProducts.isEmpty()) {
+     * return ResponseEntity.ok(popularProducts);
+     * } else {
+     * return ResponseEntity.noContent().build();
+     * }
+     * }
+     */
+
+    @GetMapping("/new/{limit}")
+    public ResponseEntity<List<Product>> getNewProducts(int limit) {
+        List<Product> newProducts = productService.getNewProducts(limit);
+        if (!newProducts.isEmpty()) {
+            return ResponseEntity.ok(newProducts);
         } else {
             return ResponseEntity.noContent().build();
         }
-    } */
-
-  @GetMapping("/new/{limit}")
-  public ResponseEntity<List<Product>> getNewProducts( int limit) {
-      List<Product> newProducts = productService.getNewProducts(limit);
-      if (!newProducts.isEmpty()) {
-          return ResponseEntity.ok(newProducts);
-      } else {
-          return ResponseEntity.noContent().build();
-      }
-  }
-
+    }
 
     @GetMapping("/category/{categoryName}")
     public ResponseEntity<List<Product>> getProductsInCategory(@PathVariable String categoryName) {
@@ -191,13 +198,11 @@ public class ProductController {
         }
     }
 
-
-    //range Price
+    // range Price
     @GetMapping("/priceRange")
     public ResponseEntity<List<Product>> filterAndSortProductsByPrice(
             @RequestParam(name = "minPrice", required = false) BigDecimal minPrice,
-            @RequestParam(name = "maxPrice", required = false) BigDecimal maxPrice
-         ) {
+            @RequestParam(name = "maxPrice", required = false) BigDecimal maxPrice) {
         List<Product> filteredProducts = productService.filterProductsByPrice(minPrice, maxPrice);
         return ResponseEntity.ok(filteredProducts);
     }
@@ -208,6 +213,7 @@ public class ProductController {
         List<Product> products = productService.getProductsByPrice(sortDirection);
         return ResponseEntity.ok(products);
     }
+
     @GetMapping("/getSize")
     public ResponseEntity<List<Product>> getProductsBySize(@RequestParam(name = "size") String size) {
         List<Product> products = productService.getProductsBySize(size);
@@ -234,11 +240,11 @@ public class ProductController {
             return ResponseEntity.ok(reviews);
         }
     }
+
     @PostMapping("/{productId}/reviews")
     public ResponseEntity<Review> createReview(
             @PathVariable Long productId,
-            @RequestBody Review review
-    ) {
+            @RequestBody Review review) {
         Review createdReview = reviewService.createReviewInProduct(productId, review);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdReview);
     }
@@ -247,8 +253,7 @@ public class ProductController {
     public ResponseEntity<Review> updateReview(
             @PathVariable Long productId,
             @PathVariable Long reviewId,
-            @RequestBody Review updatedReview
-    ) {
+            @RequestBody Review updatedReview) {
         Review updated = reviewService.updateReviewInProduct(productId, reviewId, updatedReview);
         return ResponseEntity.ok(updated);
     }
@@ -256,8 +261,7 @@ public class ProductController {
     @DeleteMapping("/{productId}/reviews/{reviewId}")
     public ResponseEntity<Void> deleteReview(
             @PathVariable Long productId,
-            @PathVariable Long reviewId
-    ) {
+            @PathVariable Long reviewId) {
         reviewService.deleteReviewInProduct(productId, reviewId);
         return ResponseEntity.noContent().build();
     }
@@ -272,9 +276,10 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @GetMapping("/{productId}/countReviews")
     public ResponseEntity<Integer> getcountReviews(@PathVariable Long productId) {
-          int countedReviews=reviewService.countReviews(productId);
+        int countedReviews = reviewService.countReviews(productId);
         if (countedReviews >= 0) {
             return ResponseEntity.ok(countedReviews);
         } else {
@@ -287,9 +292,4 @@ public class ProductController {
         return ResponseEntity.ok(productService.listProductShop());
     }
 
-
-
-
 }
-
-

@@ -5,7 +5,7 @@ import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
-import com.holisticbabe.holisticbabemarketplace.Dtos.MultimediaRepository;
+import com.holisticbabe.holisticbabemarketplace.Repositories.MultimediaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+//@Service
 public class FileServiceImpl implements FileService {
 
     @Value("${gcp.bucket.name}")

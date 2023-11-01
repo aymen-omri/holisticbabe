@@ -1,7 +1,7 @@
 package com.holisticbabe.holisticbabemarketplace.Impl;
 
-import com.holisticbabe.holisticbabemarketplace.Dtos.ProductRepository;
-import com.holisticbabe.holisticbabemarketplace.Dtos.ReviewRepository;
+import com.holisticbabe.holisticbabemarketplace.Repositories.ProductRepository;
+import com.holisticbabe.holisticbabemarketplace.Repositories.ReviewRepository;
 import com.holisticbabe.holisticbabemarketplace.Models.Product;
 import com.holisticbabe.holisticbabemarketplace.Models.Review;
 import com.holisticbabe.holisticbabemarketplace.Services.ReviewService;
@@ -23,8 +23,6 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Autowired
     private ProductRepository productRepository;
-
-
 
     public List<Review> getAllReviews() {
         try {
@@ -49,12 +47,8 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     public Review createReview(Review review) {
-        try {
-            return reviewRepository.save(review);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("An error occurred while creating the review.");
-        }
+        return reviewRepository.save(review);
+
     }
 
     public Review updateReview(Long reviewId, Review updatedReview) {
@@ -88,6 +82,7 @@ public class ReviewServiceImpl implements ReviewService {
             throw new RuntimeException("An error occurred while deleting the review.");
         }
     }
+
     public Review createReviewInProduct(Long productId, Review review) {
         try {
             Product product = productRepository.findById(productId)
@@ -141,6 +136,7 @@ public class ReviewServiceImpl implements ReviewService {
             throw new RuntimeException("An error occurred while deleting the review.");
         }
     }
+
     public double calculateProductRating(Long productId) {
         try {
             List<Review> reviews = reviewRepository.findReviewsByProductId(productId);
@@ -155,57 +151,58 @@ public class ReviewServiceImpl implements ReviewService {
             }
 
             return totalRating / reviews.size();
-        }catch(EntityNotFoundException ex){
+        } catch (EntityNotFoundException ex) {
             ex.printStackTrace();
             throw ex;
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            throw  new EntityNotFoundException("I don't have a Rating");
+            throw new EntityNotFoundException("I don't have a Rating");
         }
     }
 
-    public int countReviews(Long productId){
-        try{
-            int reviews=reviewRepository.countReviews(productId);
+    public int countReviews(Long productId) {
+        try {
+            int reviews = reviewRepository.countReviews(productId);
             return reviews;
-        }catch (EntityNotFoundException ex){
+        } catch (EntityNotFoundException ex) {
             ex.printStackTrace();
             throw ex;
         }
     }
-    public  Review likeReview(Long reviewId){
-        try{
-             Review review=reviewRepository.findById(reviewId)
-                     .orElseThrow(()->new RuntimeException("review not found"));
-             review.setLikeReview(true);
-             review.setDislikeReview(false);
-             return reviewRepository.save(review);
-        }catch(EntityNotFoundException ex){
-            ex.printStackTrace();
-            throw  ex;
 
-        }catch (Exception ex){
+    public Review likeReview(Long reviewId) {
+        try {
+            Review review = reviewRepository.findById(reviewId)
+                    .orElseThrow(() -> new RuntimeException("review not found"));
+            review.setLikeReview(true);
+            review.setDislikeReview(false);
+            return reviewRepository.save(review);
+        } catch (EntityNotFoundException ex) {
             ex.printStackTrace();
-            throw  new EntityNotFoundException("I don't have a Like");
+            throw ex;
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new EntityNotFoundException("I don't have a Like");
 
         }
     }
 
-    public  Review dislikeReview(Long reviewId){
-        try{
-           Review review=reviewRepository.findById(reviewId)
-                   .orElseThrow(()->new RuntimeException("review not found"));
-           review.setDislikeReview(true);
-           review.setLikeReview(false);
-           return reviewRepository.save(review);
-        }catch(EntityNotFoundException ex){
+    public Review dislikeReview(Long reviewId) {
+        try {
+            Review review = reviewRepository.findById(reviewId)
+                    .orElseThrow(() -> new RuntimeException("review not found"));
+            review.setDislikeReview(true);
+            review.setLikeReview(false);
+            return reviewRepository.save(review);
+        } catch (EntityNotFoundException ex) {
             ex.printStackTrace();
-            throw  ex;
+            throw ex;
 
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
-            throw  new EntityNotFoundException("I don't have a Like");
+            throw new EntityNotFoundException("I don't have a Like");
 
         }
     }
@@ -214,10 +211,10 @@ public class ReviewServiceImpl implements ReviewService {
     public long countDislikesForReview(long reviewId) {
         try {
             return reviewRepository.countByReviewIdAndDislikeIsTrue(reviewId);
-        }catch (EntityNotFoundException ex){
+        } catch (EntityNotFoundException ex) {
             ex.printStackTrace();
             throw ex;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("count 0 ");
         }
@@ -227,15 +224,13 @@ public class ReviewServiceImpl implements ReviewService {
     public long countLikeForReview(long reviewId) {
         try {
             return reviewRepository.countByReviewIdAndLikeIsTrue(reviewId);
-        }catch (EntityNotFoundException ex){
+        } catch (EntityNotFoundException ex) {
             ex.printStackTrace();
             throw ex;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("count 0 ");
         }
     }
-
-
 
 }

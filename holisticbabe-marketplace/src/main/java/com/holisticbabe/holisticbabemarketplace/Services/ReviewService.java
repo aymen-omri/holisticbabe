@@ -1,6 +1,5 @@
 package com.holisticbabe.holisticbabemarketplace.Services;
 
-import com.holisticbabe.holisticbabemarketplace.Models.Product;
 import com.holisticbabe.holisticbabemarketplace.Models.Review;
 
 import java.util.List;

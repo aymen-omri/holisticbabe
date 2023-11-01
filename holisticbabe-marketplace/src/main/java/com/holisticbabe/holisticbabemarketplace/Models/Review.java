@@ -1,9 +1,7 @@
 package com.holisticbabe.holisticbabemarketplace.Models;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,7 +20,7 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id_review;
     private String comment;
-    private int value;
+    private Integer value;
     private  Boolean likeReview;
     private Boolean dislikeReview;
     private String pros;
@@ -31,7 +29,7 @@ public class Review {
     @JoinColumn(name = "id_user")
     private _User user;
 
-    @JsonIgnore
+    //@JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_product")
     private Product product;
