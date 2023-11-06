@@ -1,6 +1,7 @@
 package com.holisticbabe.holisticbabemarketplace.Impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -26,8 +27,8 @@ public class PaymentMethodServiceImpl implements PayementMethodService {
 
     @Override
     public List<PaymentMethodDto> findByUserId(long id) {
-        return paymentMethodRepository.findByUserId(id).stream().map(p -> modelMapper.map(p, PaymentMethodDto.class))
-                .toList();
+        return paymentMethodRepository.findByUserId(id)
+                .stream().map(p -> modelMapper.map(p, PaymentMethodDto.class)).toList();
     }
 
     @Override

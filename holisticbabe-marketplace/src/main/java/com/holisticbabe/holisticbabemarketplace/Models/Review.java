@@ -25,12 +25,12 @@ public class Review {
     private Boolean dislikeReview;
     private String pros;
     private String cons;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_user")
     private _User user;
 
     //@JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_product")
     private Product product;
 

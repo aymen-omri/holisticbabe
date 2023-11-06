@@ -24,7 +24,7 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public CountryDto findById(long id) {
-        return modelMapper.map(countryRepository.findById(id).get(), CountryDto.class);
+        return modelMapper.map(countryRepository.findById(id).get() , CountryDto.class);
     }
 
     @Override

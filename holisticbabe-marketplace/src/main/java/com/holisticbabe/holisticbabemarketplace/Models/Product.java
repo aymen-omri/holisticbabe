@@ -47,14 +47,14 @@ public class Product {
     private Category category;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product")
     private List<Review> reviews;
 
     @ManyToMany
     private List<Promotion> promotions;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product")
     private List<Multimedia> images;
 
     @ManyToOne

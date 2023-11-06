@@ -14,7 +14,7 @@ public interface ProductService {
 
     Product getProductById(Long id);
 
-    Product createProduct(Product product , Long id_user); 
+    Product createProduct(String name , String description , BigDecimal price , Long id_user , Long id_category , List<MultipartFile> images);
 
     void deleteProduct(Long id);
 

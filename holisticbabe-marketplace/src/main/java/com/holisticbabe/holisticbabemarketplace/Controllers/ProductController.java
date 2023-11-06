@@ -50,47 +50,25 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/user/{id_user}")
-    public ResponseEntity<String> createProductWithImages(
-            @PathVariable("id_user") Long id_user,
-            @ModelAttribute Product product,
-            @RequestParam("categoryId") Long categoryId,
-            @RequestParam("categoryName") String categoryName,
+    @PostMapping("/add")
+    public ResponseEntity<?> createProductWithImages(
+            @RequestParam("id_user") Long id_user,
+            @RequestParam("name") String name,
+            @RequestParam("description") String description,
+            @RequestParam("price") BigDecimal price,
+            @RequestParam("id_category") Long id_category,
             @RequestPart List<MultipartFile> images){
         try {
-            if (categoryId == null) {
-                return ResponseEntity.badRequest().body("Category ID is required.");
+            Product savedProduct = productService.createProduct(name , description , price , id_user , id_category , images);
+            if(savedProduct == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Problem while inserting product!");
             }
-            Category existingCategory = categoryService.getById(categoryId);
-            if (existingCategory == null) {
-                if (categoryName == null || categoryName.isEmpty()) {
-                    return ResponseEntity.badRequest()
-                            .body("Category with ID " + categoryId + " does not exist, and Category Name is required.");
-                }
+            return ResponseEntity.ok(savedProduct);
 
-                existingCategory = new Category();
-                existingCategory.setName(categoryName);
-            }
-            product.setCategory(existingCategory);
-            log.info(existingCategory);
-
-            Product savedProduct = productService.createProduct(product,id_user);
-            log.info(savedProduct);
-            images.forEach(img -> {
-                try {
-                    multimediaService.uploadImage(img, savedProduct);
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            });
-
-            return ResponseEntity.ok("Product with image created successfully");
-        } catch (Exception e) {
-            e.printStackTrace();
-            //return HBUtils.getResponseEntity(HBConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+        }catch (Exception e){
             return ResponseEntity.status(500).body(e.getMessage());
         }
+
     }
 
     /**

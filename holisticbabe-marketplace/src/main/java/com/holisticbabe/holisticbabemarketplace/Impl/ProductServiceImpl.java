@@ -1,5 +1,7 @@
 package com.holisticbabe.holisticbabemarketplace.Impl;
 
+import com.holisticbabe.holisticbabemarketplace.Models.Category;
+import com.holisticbabe.holisticbabemarketplace.Repositories.CategoryRepository;
 import com.holisticbabe.holisticbabemarketplace.Repositories.MultimediaRepository;
 import com.holisticbabe.holisticbabemarketplace.Repositories.ProductRepository;
 import com.holisticbabe.holisticbabemarketplace.Repositories.UserRepository;
@@ -31,6 +33,7 @@ public class ProductServiceImpl implements ProductService {
     private final FileUploadService fileUploadService;
     private final UserRepository userRepository;
     private final MultimediaRepository multimediaRepository;
+    private final CategoryRepository categoryRepository ;
 
     @Override
     public List<Product> getAllProducts() {
@@ -53,20 +56,35 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product createProduct(Product product, Long id_user) {
-        try {
-            _User user = userRepository.findById(id_user).orElse(null);
-            if (user == null) {
-                return null;
-            }
-            product.setOwner(user);
-            Product savedProduct = productRepository.save(product);
-            log.info("Product created successfully. Product ID: {}", savedProduct.getId_product());
-            return savedProduct;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("An error occurred while creating the product.");
+    public Product createProduct(String name , String description , BigDecimal price, Long id_user , Long id_category , List<MultipartFile> images) {
+        _User user = userRepository.findById(id_user).orElse(null);
+        Category category = categoryRepository.findById(id_category).orElse(null);
+        if(user == null || category == null){
+            return null ;
         }
+        Product product = new Product();
+        product.setName(name);
+        product.setDescription(description);
+        product.setPrice(price);
+        product.setOwner(user);
+        product.setCategory(category);
+        Product productToSave = productRepository.save(product);
+
+        images.forEach(image -> {
+            String url = null;
+            try {
+                url = fileUploadService.uploadFile(image , "product-multimedia");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            Multimedia imageToSave = new Multimedia();
+            imageToSave.setName(image.getOriginalFilename());
+            imageToSave.setType(image.getContentType());
+            imageToSave.setUrl(url);
+            imageToSave.setProduct(productToSave);
+            multimediaRepository.save(imageToSave);
+        });
+        return productRepository.findById(productToSave.getId_product()).orElse(null);
     }
 
     @Override

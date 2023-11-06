@@ -46,8 +46,8 @@ public class ReviewServiceImpl implements ReviewService {
         }
     }
 
-    public Review createReview(Review review) {
-        return reviewRepository.save(review);
+    public void createReview(Review review) {
+        reviewRepository.save(review);
 
     }
 
