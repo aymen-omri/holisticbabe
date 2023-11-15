@@ -21,10 +21,9 @@ public class Review {
     private long id_review;
     private String comment;
     private Integer value;
-    private  Boolean likeReview;
-    private Boolean dislikeReview;
     private String pros;
     private String cons;
+
     @ManyToOne
     @JoinColumn(name = "id_user")
     private _User user;

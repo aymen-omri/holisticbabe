@@ -28,18 +28,13 @@ public class Product {
     @Size(min = 3, max = 100)
     @Pattern(regexp = "^[a-zA-Z0-9 ]+$")
     private String name;
+    private String ShortDescription;
     @NotBlank
     @Size(min = 10)
     private String description;
-    @NotNull
-    private BigDecimal price;
-    private String SKU;
-    private int quantityInStock;
-    private String color;
-    private String size;
-    private String material;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime dateCreated;
+    private int isApproved;
 
     @JsonIgnore
     @ManyToOne
@@ -52,7 +47,6 @@ public class Product {
 
     @ManyToMany
     private List<Promotion> promotions;
-
     @JsonIgnore
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<Multimedia> images;
@@ -61,4 +55,6 @@ public class Product {
     @JoinColumn(name = "id_user")
     private _User owner;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<ProductItem> productItems;
 }

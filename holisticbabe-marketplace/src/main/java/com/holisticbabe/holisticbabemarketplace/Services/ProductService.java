@@ -1,7 +1,11 @@
 package com.holisticbabe.holisticbabemarketplace.Services;
 
+import com.holisticbabe.holisticbabemarketplace.Dtos.ProductDto;
 import com.holisticbabe.holisticbabemarketplace.Models.Product;
 import com.holisticbabe.holisticbabemarketplace.Models.Multimedia;
+import com.holisticbabe.holisticbabemarketplace.Models.ProductItem;
+import com.holisticbabe.holisticbabemarketplace.Requests.ProductItemRequest;
+import com.holisticbabe.holisticbabemarketplace.Requests.ProductRequest;
 import com.holisticbabe.holisticbabemarketplace.Requests.ProductShop;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,18 +14,17 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProductService {
-    List<Product> getAllProducts();
+    List<ProductDto> getAllProducts();
 
     Product getProductById(Long id);
-
-    Product createProduct(Product product , Long id_user); 
+    Product addProductWithItems(ProductRequest productRequest,Long id_user,Long id_category,List<String>variationOptionValues,List<MultipartFile> images);
 
     void deleteProduct(Long id);
 
     /* List<Product> getPopularProducts(int limit); */
-    List<Product> getNewProducts(int limit);
+    List<ProductDto> getNewProducts(int limit);
 
-    List<Product> getProductsInCategory(String name);
+    List<ProductDto> getProductsInCategory(String name);
 
     /* product exist ; */
     boolean productExists(Long productId);
@@ -32,13 +35,13 @@ public interface ProductService {
 
     List<Multimedia> getProductImages(Long productId);
 
-    List<Product> filterProductsByPrice(BigDecimal minPrice, BigDecimal maxPrice);
+    //List<ProductDto> filterProductsByPrice(BigDecimal minPrice, BigDecimal maxPrice);
 
-    List<Product> getProductsByPrice(String sortDirection);
+   // List<ProductDto> getProductsByPrice(String sortDirection);
 
-    List<Product> getProductsBySize(String size);
+   // List<ProductDto> getProductsBySize(String size);
 
-    List<Product> searchProductsByName(String name);
+    ProductDto searchProductsByName(String name);
 
     List<ProductShop> listProductShop();
 

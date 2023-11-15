@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 public interface MultimediaService {
-    void uploadImage(MultipartFile file, Product product) throws IOException;
+    void uploadImages(MultipartFile[] files, Product product) throws IOException;
 
     ResponseEntity<String> deleteMultimedia(Long id);
 

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -31,9 +32,9 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createCategory(@RequestBody Category category) {
+    public ResponseEntity<?> createCategory(@RequestPart Category category ,@RequestPart ("image")MultipartFile image) {
         try {
-            Category createdCategory = categoryService.save(category);
+            Category createdCategory = categoryService.save(category,image);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdCategory);
         } catch (Exception e) {
             return ResponseEntity.status(500).body(e.getMessage());

@@ -18,25 +18,26 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByCategoryName(String categoryName);
 
-    List<Product> findByPriceBetween(BigDecimal minPrice, BigDecimal maxPrice);
+    //List<Product> findByPriceBetween(BigDecimal minPrice, BigDecimal maxPrice);
 
-    List<Product> findByPriceGreaterThanEqual(BigDecimal minPrice);
+    //List<Product> findByPriceGreaterThanEqual(BigDecimal minPrice);
 
-    List<Product> findByPriceLessThanEqual(BigDecimal maxPrice);
+    //List<Product> findByPriceLessThanEqual(BigDecimal maxPrice);
 
-    List<Product> findBySize(String size);
+    //List<Product> findBySize(String size);
 
-    List<Product> findByName(String name);
+    Product findByName(String name);
 
     @Query("SELECT new com.holisticbabe.holisticbabemarketplace.Requests.ProductShop(" +
-            "p.id_product, p.name, p.price, p.size, c.name, COALESCE(AVG(r.value), 0), " +
-            "COALESCE(MAX(pro.discount), 0), (SELECT i.url FROM Multimedia i WHERE i.product = p ORDER BY i.id_multi LIMIT 1)) "
-            +
+            "p.id_product, p.name, c.name, COALESCE(AVG(r.value), 0), " +
+            "COALESCE(MAX(pro.discount), 0), " +
+            "(SELECT i.url FROM Multimedia i WHERE i.product = p ORDER BY i.id_multi LIMIT 1), " +
+            "(SELECT pi.price FROM ProductItem pi WHERE pi.product = p)) " +
             "FROM Product p " +
             "JOIN p.category c " +
             "LEFT JOIN p.reviews r " +
             "LEFT JOIN p.promotions pro " +
-            "GROUP BY p.id_product, p.name, p.price, p.size, c.name")
+            "GROUP BY p.id_product, p.name, c.name")
     List<ProductShop> listProductShop();
 
 }
