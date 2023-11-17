@@ -2,12 +2,8 @@ package com.holisticbabe.holisticbabemarketplace.Services;
 
 import org.springframework.http.ResponseEntity;
 
-import com.holisticbabe.holisticbabemarketplace.Requests.VerifyEmailRequest;
-
 public interface EmailVerificationService {
-    ResponseEntity<String> verifyEmail(VerifyEmailRequest verifyEmailRequest);
+    ResponseEntity<?> verifyEmail(String token);
 
-    ResponseEntity<String> resentToken(String email);
-
-    ResponseEntity<Boolean> isEmailVerified(String email);
+    ResponseEntity<?> isVerified(String email);
 }

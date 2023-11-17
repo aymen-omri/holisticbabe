@@ -1,6 +1,7 @@
 package com.holisticbabe.holisticbabemarketplace.Impl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -40,7 +41,7 @@ public class ResetPasswordImpl implements ResetPasswordService {
 
     @Transactional
     @Override
-    public ResponseEntity<String> sendToken(String email) {
+    public ResponseEntity<?> sendToken(String email) {
         Optional<_User> user = userRepository.findByEmail(email);
         if (user.isPresent()) {
             String tokenText = this.generateToken();
@@ -55,13 +56,15 @@ public class ResetPasswordImpl implements ResetPasswordService {
             } catch (MessagingException e) {
                 return ResponseEntity.status(500).body(e.getMessage());
             }
-            return ResponseEntity.ok("Token received successfully!");
+            var response = new HashMap<String, String>();
+            response.put("message", "Token received successfully!");
+            return ResponseEntity.ok(response);
         }
         return ResponseEntity.status(404).body("Email not found!");
     }
 
     @Override
-    public ResponseEntity<String> verifToken(VerifTokenRequest request) {
+    public ResponseEntity<?> verifToken(VerifTokenRequest request) {
         _User user = userRepository.findByEmail(request.getEmail()).get();
         Date dateNow = new Date(System.currentTimeMillis());
         Date expDateCurrentToken = user.getToken().getExpiryDate();
@@ -72,11 +75,13 @@ public class ResetPasswordImpl implements ResetPasswordService {
         if (!request.getTokenText().equals(user.getToken().getToken())) {
             return ResponseEntity.status(401).body("Invalid token!");
         }
-        return ResponseEntity.ok("Token is valid");
+        var response = new HashMap<String, String>();
+        response.put("message", "Token is valid");
+        return ResponseEntity.ok(response);
     }
 
     @Override
-    public ResponseEntity<String> resetPassword(ResetPasswordRequest request) {
+    public ResponseEntity<?> resetPassword(ResetPasswordRequest request) {
         _User user = userRepository.findByEmail(request.getEmail()).orElse(null);
         if (user == null) {
             return ResponseEntity.status(404).body("No such user exists!");
@@ -86,7 +91,9 @@ public class ResetPasswordImpl implements ResetPasswordService {
 
             user.setPassword(passwordEncoder.encode(request.getNewPassword()));
             tokenRepository.deleteById(user.getToken().getId_token());
-            return ResponseEntity.ok("Password changed successfully!");
+            var response = new HashMap<String, String>();
+            response.put("message", "Password changed successfully!");
+            return ResponseEntity.ok(response);
         }
         return ResponseEntity.status(401).body("Something went wrong!");
     }

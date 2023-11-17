@@ -2,6 +2,7 @@ package com.holisticbabe.holisticbabemarketplace.Controllers;
 
 import com.holisticbabe.holisticbabemarketplace.Dtos.AddressDto;
 import com.holisticbabe.holisticbabemarketplace.Models.Address;
+import com.holisticbabe.holisticbabemarketplace.Requests.SuccessMessageRequest;
 import com.holisticbabe.holisticbabemarketplace.Services.AddressService;
 
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class AddressController {
 
     @GetMapping("/{id}")
     public ResponseEntity<AddressDto> getAddressById(@PathVariable long id) {
-        //NoSuchElementException 
+        // NoSuchElementException
         AddressDto addressDto = addressService.findAddressById(id);
         if (addressDto != null) {
             return ResponseEntity.ok(addressDto);
@@ -35,32 +36,33 @@ public class AddressController {
         return ResponseEntity.ok(addresses);
     }
 
-    @PostMapping
-    public ResponseEntity<String> addAddress(@RequestBody Address addressDto) {
+    @PostMapping("/user/{id}")
+    public ResponseEntity<?> addAddress(@RequestBody Address address, @PathVariable long id) {
         try {
-            addressService.insertAddress(addressDto);
-            return ResponseEntity.ok("Address added successfully!");
+            addressService.insertAddress(address, id);
+            return ResponseEntity.ok(new SuccessMessageRequest(200, "Address added successfully!"));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Failed to add address: " + e.getMessage());
+            return ResponseEntity.status(500).body(e.getMessage());
         }
     }
 
-    @PutMapping("/{address_id}/country/{country_id}")
-    public ResponseEntity<String> updateAddress(@PathVariable("address_id") long address_id,
-            @PathVariable("country_id") long country_id, @RequestBody AddressDto addressDto) {
+    @PutMapping("/{address_id}/country/{country_id}/user/{user_id}")
+    public ResponseEntity<?> updateAddress(@PathVariable("address_id") long address_id,
+            @PathVariable("country_id") long country_id, @PathVariable("user_id") long user_id,
+            @RequestBody AddressDto addressDto) {
         try {
-            addressService.updateAddress(country_id, address_id, addressDto);
-            return ResponseEntity.ok("Address updated successfully!");
+            addressService.updateAddress(country_id, address_id, user_id, addressDto);
+            return ResponseEntity.ok(new SuccessMessageRequest(200, "Address updated successfully!"));
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Failed to update address: " + e.getMessage());
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteAddress(@PathVariable long id) {
+    public ResponseEntity<?> deleteAddress(@PathVariable long id) {
         try {
             addressService.deleteAddress(id);
-            return ResponseEntity.ok("Address deleted successfully!");
+            return ResponseEntity.ok(new SuccessMessageRequest(200, "Address deleted successfully!"));
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Failed to delete address: " + e.getMessage());
         }

@@ -7,10 +7,10 @@ import com.holisticbabe.holisticbabemarketplace.Requests.VerifTokenRequest;
 
 public interface ResetPasswordService {
 
-    ResponseEntity<String> sendToken(String email);
+    ResponseEntity<?> sendToken(String email);
 
-    ResponseEntity<String> verifToken(VerifTokenRequest request);
+    ResponseEntity<?> verifToken(VerifTokenRequest request);
 
-    ResponseEntity<String> resetPassword(ResetPasswordRequest request);
+    ResponseEntity<?> resetPassword(ResetPasswordRequest request);
 
 }

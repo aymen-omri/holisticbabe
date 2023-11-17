@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.holisticbabe.holisticbabemarketplace.Models.Lesson;
-import com.holisticbabe.holisticbabemarketplace.Repositories.LessonRepository;
 import com.holisticbabe.holisticbabemarketplace.Services.LessonService;
 
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LessonServiceImpl implements LessonService {
 
-    private final LessonRepository lessonRepository ; 
+    //private final LessonRepository lessonRepository ; 
 
     @Override
     public List<Lesson> getCourseLessons(long id) {

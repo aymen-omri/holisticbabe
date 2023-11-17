@@ -7,10 +7,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.web.cors.CorsConfigurationSource;
-
-import static org.springframework.security.config.Customizer.withDefaults;
-
 import lombok.RequiredArgsConstructor;
 
 @EnableWebSecurity
@@ -18,24 +17,29 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final CorsConfigurationSource corsConfigurationSource;
-    private final AuthenticationProvider customAuthenticationProvider;
+        private final CorsConfigurationSource corsConfigurationSource;
+        private final AuthenticationProvider customAuthenticationProvider;
+        private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        //Request+token
-        http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource))
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(
-                        auth -> auth.requestMatchers("/**").permitAll()
-                        .anyRequest().authenticated())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(customAuthenticationProvider)
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()));
-        // .oauth2Login(Customizer.withDefaults());
+        @Bean
+        SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+                // Request+token
+                http
+                                .cors(cors -> cors.configurationSource(corsConfigurationSource))
+                                .csrf(csrf -> csrf.disable())
+                                .authorizeHttpRequests(
+                                                auth -> auth.requestMatchers("/**").permitAll()
+                                                                .anyRequest().authenticated())
+                                .sessionManagement(session -> session
+                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                                                .sessionAuthenticationStrategy(new NullAuthenticatedSessionStrategy()))
+                                .authenticationProvider(customAuthenticationProvider)
+                                // .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()))
+                                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-        return http.build();
-    }
+                // .oauth2Login(Customizer.withDefaults());
+
+                return http.build();
+        }
 
 }

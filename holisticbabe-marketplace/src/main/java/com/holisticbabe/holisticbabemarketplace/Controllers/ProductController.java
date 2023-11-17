@@ -1,16 +1,11 @@
 package com.holisticbabe.holisticbabemarketplace.Controllers;
 
-import com.holisticbabe.holisticbabemarketplace.Constants.HBConstants;
 import com.holisticbabe.holisticbabemarketplace.Models.Product;
-import com.holisticbabe.holisticbabemarketplace.Models.Category;
 import com.holisticbabe.holisticbabemarketplace.Models.Multimedia;
 import com.holisticbabe.holisticbabemarketplace.Models.Review;
 import com.holisticbabe.holisticbabemarketplace.Requests.ProductShop;
-import com.holisticbabe.holisticbabemarketplace.Services.CategoryService;
-import com.holisticbabe.holisticbabemarketplace.Services.MultimediaService;
 import com.holisticbabe.holisticbabemarketplace.Services.ProductService;
 import com.holisticbabe.holisticbabemarketplace.Services.ReviewService;
-import com.holisticbabe.holisticbabemarketplace.Utils.HBUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,16 +18,12 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static org.hibernate.query.sqm.tree.SqmNode.log;
-
 @RestController
 @RequestMapping("/api/products")
 @RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
-    private final MultimediaService multimediaService;
-    private final CategoryService categoryService;
     private final ReviewService reviewService;
 
     @GetMapping

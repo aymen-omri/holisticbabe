@@ -16,17 +16,17 @@ public class ResetPasswordController {
     private final ResetPasswordService resetPasswordService;
 
     @PostMapping("/send-token")
-    public ResponseEntity<String> sendResetToken(@RequestParam("email") String email) {
+    public ResponseEntity<?> sendResetToken(@RequestParam("email") String email) {
         return resetPasswordService.sendToken(email);
     }
 
     @PostMapping("/verify-token")
-    public ResponseEntity<String> verifyToken(@RequestBody VerifTokenRequest request) {
+    public ResponseEntity<?> verifyToken(@RequestBody VerifTokenRequest request) {
         return resetPasswordService.verifToken(request);
     }
 
     @PostMapping("/reset")
-    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequest request) {
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest request) {
         return resetPasswordService.resetPassword(request);
     }
 }

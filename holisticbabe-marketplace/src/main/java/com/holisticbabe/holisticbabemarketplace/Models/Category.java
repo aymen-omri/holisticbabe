@@ -1,15 +1,15 @@
 package com.holisticbabe.holisticbabemarketplace.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -23,4 +23,8 @@ public class Category {
     @Size(min = 3, max = 100)
     @Pattern(regexp = "^[a-zA-Z0-9 ]+$")
     private String name;
+    private String description;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDateTime dateCreated;
+
 }

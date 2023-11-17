@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.holisticbabe.holisticbabemarketplace.Dtos.UserDto;
 import com.holisticbabe.holisticbabemarketplace.Models._User;
+import com.holisticbabe.holisticbabemarketplace.Requests.SuccessMessageRequest;
+import com.holisticbabe.holisticbabemarketplace.Requests.UpdatePasswordRequest;
 import com.holisticbabe.holisticbabemarketplace.Services.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -28,13 +30,26 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/by-id/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable long id) {
         UserDto userDto = userService.findUserById(id);
         if (userDto != null) {
             return ResponseEntity.ok(userDto);
         }
         return ResponseEntity.status(404).body(null);
+    }
+
+    @GetMapping("/by-email")
+    public ResponseEntity<?> getUserByEmail(@RequestParam("email") String email) {
+        try {
+            UserDto userDto = userService.getUserByEmail(email);
+            if (userDto != null) {
+                return ResponseEntity.ok(userDto);
+            }
+            return ResponseEntity.status(404).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
     }
 
     @GetMapping("/all")
@@ -44,7 +59,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateUser(@RequestBody _User user, @PathVariable long id) {
+    public ResponseEntity<?> updateUser(@RequestBody _User user, @PathVariable long id) {
         return userService.updateUser(user, id);
     }
 
@@ -59,9 +74,15 @@ public class UserController {
     }
 
     @PostMapping("/{id}/profile-picture")
-    public ResponseEntity<String> uploadProfilePicture(@PathVariable long id,
+    public ResponseEntity<SuccessMessageRequest> uploadProfilePicture(@PathVariable long id,
             @RequestParam("file") MultipartFile file) {
         userService.addProfilePicture(id, file);
-        return ResponseEntity.ok("Profile picture uploaded successfully!");
+        return ResponseEntity.ok(new SuccessMessageRequest(200, "Profile picture uploaded successfully!"));
+    }
+
+    @PutMapping("/update-password/{id}")
+    public ResponseEntity<?> updatePassword(@PathVariable long id,
+            @RequestBody UpdatePasswordRequest request) {
+        return userService.updateUserPassword(request, id);
     }
 }

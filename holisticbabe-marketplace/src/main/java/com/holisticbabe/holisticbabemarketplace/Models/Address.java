@@ -1,6 +1,8 @@
 package com.holisticbabe.holisticbabemarketplace.Models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,6 +23,7 @@ public class Address {
     private long id_address;
     
     @NonNull
+    @Enumerated(EnumType.STRING)
     private AddressType addressType;
     
     @NonNull

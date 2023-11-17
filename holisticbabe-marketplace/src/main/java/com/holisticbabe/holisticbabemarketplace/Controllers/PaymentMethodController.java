@@ -1,6 +1,8 @@
 package com.holisticbabe.holisticbabemarketplace.Controllers;
 
 import com.holisticbabe.holisticbabemarketplace.Dtos.PaymentMethodDto;
+import com.holisticbabe.holisticbabemarketplace.Models.PaymentMethod;
+import com.holisticbabe.holisticbabemarketplace.Requests.SuccessMessageRequest;
 import com.holisticbabe.holisticbabemarketplace.Services.PayementMethodService;
 
 import lombok.RequiredArgsConstructor;
@@ -34,32 +36,32 @@ public class PaymentMethodController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addPaymentMethod(@RequestBody PaymentMethodDto paymentMethodDto) {
+    public ResponseEntity<?> addPaymentMethod(@RequestBody PaymentMethod paymentMethod) {
         try {
-            paymentMethodService.insertPaymentMethod(paymentMethodDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Payment method added successfully!");
+            paymentMethodService.insertPaymentMethod(paymentMethod);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new SuccessMessageRequest(200, "Payment method added successfully!"));
         } catch (Exception e) {
-            return new ResponseEntity<>("Error adding payment method", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletePaymentMethod(@PathVariable long id) {
+    public ResponseEntity<?> deletePaymentMethod(@PathVariable long id) {
         try {
             paymentMethodService.deletePaymentMethod(id);
-            return ResponseEntity.ok("Payment method deleted successfully!");
+            return ResponseEntity.ok(new SuccessMessageRequest(200, "Payment method deleted successfully!"));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error deleting the payment method");
         }
     }
 
-    @PutMapping("/{id_payment_method}/payment-type/{id_payment_type}")
-    public ResponseEntity<String> updatePaymentMethod(@PathVariable("id_payment_method") long id_payment_method,
-            @PathVariable("id_payment_type") long id_payment_type,
+    @PutMapping("/{id_payment_method}")
+    public ResponseEntity<?> updatePaymentMethod(@PathVariable("id_payment_method") long id_payment_method,
             @RequestBody PaymentMethodDto paymentMethodDto) {
         try {
-            paymentMethodService.updatePaymentMethod(id_payment_type, id_payment_method, paymentMethodDto);
-            return ResponseEntity.ok("Payment method updated successfully!");
+            paymentMethodService.updatePaymentMethod(id_payment_method, paymentMethodDto);
+            return ResponseEntity.ok(new SuccessMessageRequest(200, "Payment method updated successfully!"));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error updating the payment method");
         }

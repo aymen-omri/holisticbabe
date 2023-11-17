@@ -8,7 +8,7 @@ import com.holisticbabe.holisticbabemarketplace.Models.Address;
 public interface AddressService {
     AddressDto findAddressById(long id);
 
-    void insertAddress(Address address);
+    void insertAddress(Address address, long id);
 
     List<AddressDto> getAll();
 
@@ -16,5 +16,5 @@ public interface AddressService {
 
     void deleteAddress(long id);
 
-    void updateAddress(long countryId, long addressId, AddressDto address);
+    void updateAddress(long countryId, long addressId, long useId, AddressDto address);
 }

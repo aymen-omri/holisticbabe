@@ -6,16 +6,13 @@ import com.holisticbabe.holisticbabemarketplace.Models.Product;
 import com.holisticbabe.holisticbabemarketplace.Models.Review;
 import com.holisticbabe.holisticbabemarketplace.Services.ReviewService;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static java.lang.Math.round;
 
 @Service
-@Slf4j
 public class ReviewServiceImpl implements ReviewService {
 
     @Autowired

@@ -26,8 +26,7 @@ public class PaymentMethod {
     @NonNull
     private String provider;
     @NonNull
-    @Pattern(regexp = "\\d{16}", message = "Account number must be 16 digits")
-    private BigInteger accountNumber;
+    private String accountNumber;
     @NonNull
     private LocalDate expiryDate;
 

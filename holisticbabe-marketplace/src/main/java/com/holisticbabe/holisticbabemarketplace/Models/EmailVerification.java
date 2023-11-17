@@ -1,7 +1,5 @@
 package com.holisticbabe.holisticbabemarketplace.Models;
 
-import java.util.Date;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,9 +20,8 @@ public class EmailVerification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_verif;
     @NonNull
-    private String verif_token;
-    @NonNull
-    private Date expiryDate;
+    private String verifToken;
+
     private boolean status;
 
     @OneToOne

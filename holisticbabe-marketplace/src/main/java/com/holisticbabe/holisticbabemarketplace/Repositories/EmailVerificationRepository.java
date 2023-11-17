@@ -12,4 +12,6 @@ public interface EmailVerificationRepository extends JpaRepository<EmailVerifica
     @Query("select e from EmailVerification e where e.user.email = ?1")
     Optional<EmailVerification> findByUserEmail(String email);
 
+    Optional<EmailVerification> findByVerifToken(String token);
+
 }

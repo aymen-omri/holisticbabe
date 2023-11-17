@@ -5,11 +5,9 @@ import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
-import com.holisticbabe.holisticbabemarketplace.Repositories.MultimediaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,10 +21,6 @@ public class FileServiceImpl implements FileService {
 
     @Autowired
     Storage storage;
-
-
-    @Autowired
-    private MultimediaRepository multimediaRepository;
 
     @Override
     public List<String> listOfFiles() {
@@ -57,17 +51,14 @@ public class FileServiceImpl implements FileService {
         return blob.delete();
     }
 
-
     @Override
     public String uploadFile(MultipartFile file) throws IOException {
 
         BlobId blobId = BlobId.of(bucketName, file.getOriginalFilename());
-        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).
-                setContentType(file.getContentType()).build();
-        Blob blob = storage.create(blobInfo,file.getBytes());
+        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(file.getContentType()).build();
+        Blob blob = storage.create(blobInfo, file.getBytes());
         return null;
     }
-
 
     public Blob getBlob(String fileUrl) {
         try {

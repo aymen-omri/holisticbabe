@@ -34,5 +34,8 @@ public class Multimedia {
     private Consultant consultant;
 
     @ManyToOne
-    private Vendor vendor ;
+    private Vendor vendor;
+
+    @ManyToOne
+    private Category category;
 }

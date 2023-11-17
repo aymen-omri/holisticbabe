@@ -1,7 +1,6 @@
 package com.holisticbabe.holisticbabemarketplace.Impl;
 
 import com.holisticbabe.holisticbabemarketplace.Repositories.ProductRepository;
-import com.holisticbabe.holisticbabemarketplace.Repositories.UserRepository;
 import com.holisticbabe.holisticbabemarketplace.Repositories.WishlistRepository;
 import com.holisticbabe.holisticbabemarketplace.Models.Product;
 import com.holisticbabe.holisticbabemarketplace.Models.Wishlist;
@@ -20,8 +19,6 @@ public class WishlistServiceImpl implements WishlistService {
     private WishlistRepository wishlistRepository;
     @Autowired
     private ProductRepository productRepository;
-    @Autowired
-    private UserRepository userRepository;
 
     @Override
     public List<Wishlist> getAll() {

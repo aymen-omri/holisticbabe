@@ -1,13 +1,13 @@
 package com.holisticbabe.holisticbabemarketplace.Models;
 
 import java.math.BigInteger;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -41,7 +41,6 @@ public class _User implements UserDetails {
     @NonNull
     private String lastName;
 
-    @NonNull
     @Column(unique = true)
     @Size(min = 8, max = 100)
     private String username;
@@ -51,13 +50,20 @@ public class _User implements UserDetails {
     // @Email(message = "Please enter a valid email!")
     private String email;
 
-    @NonNull
     @Column(unique = true)
     private BigInteger phoneNumber;
 
-    @NonNull
     @Size(min = 8, max = 200)
     private String password;
+
+    @Column(length = 10000)
+    private String description;
+
+    private LocalDate birthDate;
+
+    private String profession;
+
+    private LocalDate memberSince;
 
     private boolean enabled;
 
