@@ -18,4 +18,7 @@ public interface MultimediaRepository extends JpaRepository<Multimedia, Long> {
 
     Multimedia findByCategory(Category category);
 
+    @Query("select m from Multimedia m where m.course.id_course = ?1")
+    List<Multimedia> getCourseFiles(long id);
+
 }

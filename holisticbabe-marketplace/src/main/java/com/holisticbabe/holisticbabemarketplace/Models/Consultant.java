@@ -20,14 +20,10 @@ public class Consultant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_consultant;
     private String description;
-    private boolean approved;
-    private LocalDate date ;
+    private int approved;
+    private LocalDate date;
 
     @OneToOne
     private _User user;
-
-    public void setApproved(boolean approved) {
-        this.approved = approved;
-    }
 
 }

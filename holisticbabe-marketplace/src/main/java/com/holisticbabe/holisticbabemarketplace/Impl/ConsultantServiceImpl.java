@@ -18,6 +18,7 @@ import com.holisticbabe.holisticbabemarketplace.Models._User;
 import com.holisticbabe.holisticbabemarketplace.Repositories.ConsultantRepository;
 import com.holisticbabe.holisticbabemarketplace.Repositories.MultimediaRepository;
 import com.holisticbabe.holisticbabemarketplace.Repositories.UserRepository;
+import com.holisticbabe.holisticbabemarketplace.Requests.SuccessMessageRequest;
 import com.holisticbabe.holisticbabemarketplace.Services.ConsultantService;
 import com.holisticbabe.holisticbabemarketplace.Utlis.FileUploadService;
 
@@ -35,17 +36,36 @@ public class ConsultantServiceImpl implements ConsultantService {
     private final ModelMapper modelMapper;
 
     @Override
-    public ResponseEntity<String> addConsultant(long id_user, List<MultipartFile> files, String Description) {
+    public ResponseEntity<?> addConsultant(long id_user, String demoUrl, String demoVideoType,
+            String demoVideoName, List<MultipartFile> files, String Description) {
         _User user = userRepository.findById(id_user).orElse(null);
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
+        Optional<Consultant> existingConsultant = consultantRepository.getConsultantByUserId(user.getId_user());
+        if (existingConsultant.isPresent()) {
+            var con = existingConsultant.get();
+            if (con.getApproved() == 0) {
+                return ResponseEntity.badRequest().body("You already sent a request");
+            } else if (con.getApproved() == 1) {
+                return ResponseEntity.badRequest().body("Your request is approved");
+            } else {
+                multimediaRepository.deleteAll(multimediaRepository.getFilesByConsultantId(con.getId_consultant()));
+                consultantRepository.deleteById(con.getId_consultant());
+            }
+        }
         Consultant consultant = new Consultant();
         consultant.setUser(user);
         consultant.setDescription(Description);
-        consultant.setApproved(false);
+        consultant.setApproved(0);
         consultant.setDate(LocalDate.now());
         Consultant savedConsultant = consultantRepository.save(consultant);
+        Multimedia demo = new Multimedia();
+        demo.setUrl(demoUrl);
+        demo.setName(demoVideoName);
+        demo.setType(demoVideoType);
+        demo.setConsultant(savedConsultant);
+        Multimedia savedDemo = multimediaRepository.save(demo);
         for (MultipartFile file : files) {
             try {
                 String link = fileUploadService.uploadFile(file, "consultants-files");
@@ -56,12 +76,13 @@ public class ConsultantServiceImpl implements ConsultantService {
                 fileToSave.setConsultant(savedConsultant);
                 multimediaRepository.save(fileToSave);
             } catch (IOException e) {
+                multimediaRepository.deleteById(savedDemo.getId_multi());
                 consultantRepository.deleteById(savedConsultant.getId_consultant());
                 return ResponseEntity.status(500).body("Error while inserting consultant files!");
             }
         }
 
-        return ResponseEntity.ok("Consultant inserted successfully!");
+        return ResponseEntity.ok(new SuccessMessageRequest(200, "Consultant inserted successfully!"));
 
     }
 
@@ -82,13 +103,25 @@ public class ConsultantServiceImpl implements ConsultantService {
 
     @Override
     @Transactional
-    public ResponseEntity<String> approveConsultant(long id) {
+    public ResponseEntity<?> approveConsultant(long id) {
         Optional<Consultant> consultant = consultantRepository.findById(id);
         if (!consultant.isPresent()) {
             return ResponseEntity.notFound().build();
         } else {
-            consultant.get().setApproved(true);
-            return ResponseEntity.ok("Consultant approved successfully!");
+            consultant.get().setApproved(1);
+            return ResponseEntity.ok(new SuccessMessageRequest(200, "Consultant approved successfully!"));
+        }
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<?> rejectConsultant(long id) {
+        Optional<Consultant> consultant = consultantRepository.findById(id);
+        if (!consultant.isPresent()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            consultant.get().setApproved(2);
+            return ResponseEntity.ok(new SuccessMessageRequest(200, "Consultant rejected!"));
         }
     }
 
@@ -98,12 +131,12 @@ public class ConsultantServiceImpl implements ConsultantService {
     }
 
     @Override
-    public boolean isApproved(long id) {
+    public int isApproved(long id) {
         Consultant consultant = consultantRepository.findById(id).orElse(null);
         if (consultant == null) {
-            return false;
+            return 2;
         }
-        return consultant.isApproved();
+        return consultant.getApproved();
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.holisticbabe.holisticbabemarketplace.Controllers;
 
 import com.holisticbabe.holisticbabemarketplace.Dtos.SocialMediaDto;
+import com.holisticbabe.holisticbabemarketplace.Models.SocialMedia;
+import com.holisticbabe.holisticbabemarketplace.Requests.SuccessMessageRequest;
 import com.holisticbabe.holisticbabemarketplace.Services.SocialMediaService;
 
 import lombok.RequiredArgsConstructor;
@@ -28,18 +30,18 @@ public class SocialMediaController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> save(@RequestBody SocialMediaDto socialMediaDto) {
+    public ResponseEntity<?> save(@RequestBody SocialMedia socialMedia) {
         try {
-            socialMediaService.save(socialMediaDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Saved successfully!");
+            socialMediaService.save(socialMedia);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new SuccessMessageRequest(200 , "Saved successfully!"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while saving: " + e.getMessage());
         }
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> update(@RequestBody SocialMediaDto socialMediaDto, @PathVariable long id) {
-        ResponseEntity<String> response = socialMediaService.update(socialMediaDto, id);
+    public ResponseEntity<?> update(@RequestBody SocialMediaDto socialMediaDto, @PathVariable long id) {
+        ResponseEntity<?> response = socialMediaService.update(socialMediaDto, id);
         return response != null ? response : ResponseEntity.notFound().build();
     }
 }

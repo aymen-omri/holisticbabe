@@ -2,18 +2,20 @@ package com.holisticbabe.holisticbabemarketplace.Services;
 
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
-
+import com.holisticbabe.holisticbabemarketplace.Dtos.LessonDto;
 import com.holisticbabe.holisticbabemarketplace.Models.Lesson;
+import com.holisticbabe.holisticbabemarketplace.Models.Multimedia;
 
 public interface LessonService {
-    List<Lesson> getCourseLessons(long id);
+    List<LessonDto> getModuleLessons(long id);
 
-    Lesson getLessonById(long id);
+    LessonDto getLessonById(long id);
 
-    Lesson addLesson(Lesson lesson);
+    LessonDto addLesson(Lesson lesson, long id_module);
 
     void deleteLesson(long id);
 
-    ResponseEntity<String> updateLesson(long id, Lesson lesson);
+    void updateLesson(long id, Lesson lesson);
+
+    void addLessonMultimediaContent(long id , Multimedia multimedia);
 }

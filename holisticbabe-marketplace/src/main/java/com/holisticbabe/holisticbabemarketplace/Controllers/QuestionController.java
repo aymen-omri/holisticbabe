@@ -1,5 +1,6 @@
 package com.holisticbabe.holisticbabemarketplace.Controllers;
 
+import com.holisticbabe.holisticbabemarketplace.Dtos.QuestionDto;
 import com.holisticbabe.holisticbabemarketplace.Models.Question;
 import com.holisticbabe.holisticbabemarketplace.Services.QuestionService;
 
@@ -11,23 +12,23 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/question")
+@RequestMapping("/api/v1/question")
 @RequiredArgsConstructor
 public class QuestionController {
 
     private final QuestionService questionService;
 
     @GetMapping("/course/{id}")
-    public List<Question> getCourseQuestions(@PathVariable long id) {
-        return questionService.getCourseQuestions(id);
+    public List<QuestionDto> getCourseQuestions(@PathVariable long id) {
+        return questionService.getQuizQuestions(id);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Question> getQuestionById(@PathVariable long id) {
-        Question question = questionService.getQuestionById(id);
-        if (question != null) {
+    public ResponseEntity<QuestionDto> getQuestionById(@PathVariable long id) {
+        try {
+            QuestionDto question = questionService.getQuestionById(id);
             return ResponseEntity.ok(question);
-        } else {
+        } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
     }
@@ -35,7 +36,7 @@ public class QuestionController {
     @PostMapping("/add")
     public ResponseEntity<?> addQuestion(@RequestBody Question question) {
         try {
-            Question addedQuestion = questionService.addQuestion(question);
+            QuestionDto addedQuestion = questionService.addQuestion(question);
             return ResponseEntity.status(201).body(addedQuestion);
         } catch (Exception e) {
             return ResponseEntity.status(500).body(e.getMessage());

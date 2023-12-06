@@ -1,5 +1,7 @@
 package com.holisticbabe.holisticbabemarketplace.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,8 +21,10 @@ public class _Option {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id_option;
     private String optionText;
-    private int isCorrect; //0 not correct 1 correct
+    private int isCorrect; // 0 not correct 1 correct
+    private String explanation;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_question")
     private Question question;

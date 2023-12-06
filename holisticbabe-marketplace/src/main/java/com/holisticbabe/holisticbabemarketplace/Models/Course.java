@@ -1,12 +1,14 @@
 package com.holisticbabe.holisticbabemarketplace.Models;
 
+import java.time.LocalDate;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,12 +24,15 @@ public class Course {
     private String title;
     private String subtitle;
     private String requirements;
+    @Column(length = 10000)
     private String description;
-    private int approved;
-
-    @OneToOne
-    @JoinColumn(name = "id_multi")
-    private Multimedia introImage;
+    private String target;
+    private LocalDate createdAt;
+    private LocalDate deletedAt;
+    private LocalDate updatedAt;
+    private int status;
+    private double price;
+    // 0 : not complete //1 : under review //2 : active // 3: rejected // 4:deleted
 
     @ManyToOne
     @JoinColumn(name = "id_language")
@@ -40,4 +45,8 @@ public class Course {
     @ManyToOne
     @JoinColumn(name = "id_category")
     private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "id_course_level")
+    private CourseLevel level;
 }

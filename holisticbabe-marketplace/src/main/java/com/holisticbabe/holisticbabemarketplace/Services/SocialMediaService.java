@@ -3,14 +3,15 @@ package com.holisticbabe.holisticbabemarketplace.Services;
 import org.springframework.http.ResponseEntity;
 
 import com.holisticbabe.holisticbabemarketplace.Dtos.SocialMediaDto;
+import com.holisticbabe.holisticbabemarketplace.Models.SocialMedia;
 
 public interface SocialMediaService {
     SocialMediaDto getById(long id);
 
     SocialMediaDto getByUserId(long id);
 
-    void save(SocialMediaDto socialMedia);
+    void save(SocialMedia socialMedia);
 
-    ResponseEntity<String> update(SocialMediaDto socialMedia, long id);
+    ResponseEntity<?> update(SocialMediaDto socialMedia, long id);
 
 }

@@ -24,3 +24,74 @@ email verification:
     "email": "saghrounimaha@gmail.com",
     "token":123456789
 }
+
+quiz: 
+{
+    "name": "first quiz",
+    "description": "the easiest one",
+    "scoreToPass": 70,
+    "questions": [
+        {
+            "questionText": "is this true?",
+            "options": [
+                {
+                    "optionText": "yes",
+                    "isCorrect": 0,
+                    "explanation": "the first one is more accurate"
+                },
+                {
+                    "optionText": "no",
+                    "isCorrect": 1,
+                    "explanation": "Good congrats"
+                }
+            ]
+        }
+    ]
+}
+
+option:
+{
+    "optionText": "hello i m an option text",
+    "isCorrect":0,
+    "explanation":"its an introduction to option text"
+}
+
+Question: 
+{
+            "questionText": "is this false please answer?",
+            "options": [
+                {
+                    "optionText": "yes",
+                    "isCorrect": 0,
+                    "explanation": "the second one is less accurate"
+                },
+                {
+                    "optionText": "no",
+                    "isCorrect": 1,
+                    "explanation": "No congrats"
+                }
+            ]
+        }
+
+course : 
+{
+    "title": "Your Course Title",
+    "subtitle": "Your Course Subtitle",
+    "requirements": "Course Requirements",
+    "description": "Course Description",
+    "target": "Course Target Audience",
+    "instructor": {
+        "id_user": 1
+    },
+    "language": {
+        "id_language": 1
+    },
+    "level": {
+        "id_course_level": 1
+    }
+
+subject : 
+{
+    "name":"subject 1",
+    "description":"this is a subject"
+}

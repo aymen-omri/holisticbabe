@@ -4,12 +4,13 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
+import com.holisticbabe.holisticbabemarketplace.Dtos.LanguageDto;
 import com.holisticbabe.holisticbabemarketplace.Models.Language;
 
 public interface LanguageService {
-    List<Language> getAll();
+    List<LanguageDto> getAll();
 
-    Language getById(long id);
+    LanguageDto getById(long id);
 
     void insertLanguage(Language language);
 

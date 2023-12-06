@@ -10,7 +10,7 @@ import com.holisticbabe.holisticbabemarketplace.Models.Vendor;
 
 public interface VendorRepository extends JpaRepository<Vendor, Long> {
 
-    @Query("select v from Vendor v where approved=false")
+    @Query("select v from Vendor v where approved=0")
     List<Vendor> getNonApprovedVendors();
 
     @Query("select v from Vendor v where v.user.id_user = ?1")

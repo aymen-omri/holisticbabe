@@ -23,13 +23,13 @@ public class Vendor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id_vendor;
-    
+
     private String companyName;
     private String societyIdentificationNumber;
     private String description;
     private String shopLink;
-    private LocalDate date ;
-    private Boolean approved;
+    private LocalDate date;
+    private int approved;
 
     @ManyToMany
     List<Country> countries = new ArrayList<>();
@@ -41,7 +41,4 @@ public class Vendor {
     @JoinColumn(name = "id_user")
     private _User user;
 
-    public void setApproved(boolean approved) {
-        this.approved = approved;
-    }
 }

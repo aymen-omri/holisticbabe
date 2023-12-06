@@ -15,6 +15,6 @@ import lombok.NoArgsConstructor;
 public class CourseLevel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long Course_level_id;
+    private long id_course_level;
     private String courseLevel;
 }

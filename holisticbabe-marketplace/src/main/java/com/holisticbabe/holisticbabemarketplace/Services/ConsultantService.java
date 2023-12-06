@@ -9,7 +9,8 @@ import com.holisticbabe.holisticbabemarketplace.Dtos.ConsultantDto;
 import com.holisticbabe.holisticbabemarketplace.Dtos.MultimediaDto;
 
 public interface ConsultantService {
-    ResponseEntity<String> addConsultant(long id_user, List<MultipartFile> files, String Description);
+    ResponseEntity<?> addConsultant(long id_user, String demoUrl, String demoVideoType, String demoVideoName,
+            List<MultipartFile> files, String Description);
 
     ConsultantDto geConsultantById(long id);
 
@@ -17,9 +18,11 @@ public interface ConsultantService {
 
     List<MultimediaDto> getConsultantFiles(long id);
 
-    ResponseEntity<String> approveConsultant(long id);
+    ResponseEntity<?> approveConsultant(long id);
+
+    ResponseEntity<?> rejectConsultant(long id);
 
     List<ConsultantDto> getAll();
 
-    boolean isApproved(long id);
+    int isApproved(long id);
 }

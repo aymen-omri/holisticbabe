@@ -9,7 +9,7 @@ import com.holisticbabe.holisticbabemarketplace.Models.Lesson;
 
 public interface LessonRepository extends JpaRepository<Lesson, Long> {
 
-    @Query("select l from Lesson l where l.course.id_course = ?1")
-    List<Lesson> getLessonsByCourseId(long id);
+    @Query("select l from Lesson l where l.subject.id_subject = ?1")
+    List<Lesson> getLessonsBySubjectId(long id);
 
 }

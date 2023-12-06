@@ -22,7 +22,6 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id_address;
     
-    @NonNull
     @Enumerated(EnumType.STRING)
     private AddressType addressType;
     

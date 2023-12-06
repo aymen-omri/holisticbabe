@@ -39,26 +39,27 @@ public class VendorController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> saveVendor(@RequestParam("addressLine1") String addressLine1,
-            @RequestParam("addressLine2") String addressLine2,
-            @RequestParam("city") String city,
-            @RequestParam("postalCode") String postalCode,
-            @RequestParam("id_country") long id_country,
-            @RequestParam("companyName") String companyName,
-            @RequestParam("identificationNumber") String identificationNumber,
-            @RequestParam("vendorDescription") String vendorDescription,
-            @RequestParam("shopLink") String shopLink,
-            @RequestParam("id_user") long id_user,
-            @RequestParam("countries") List<String> countries,
-            @RequestParam("files") List<MultipartFile> files) {
+    public ResponseEntity<?> saveVendor(
+            @RequestParam(value = "addressLine1", required = false) String addressLine1,
+            @RequestParam(value = "addressLine2", required = false) String addressLine2,
+            @RequestParam(value = "city", required = false) String city,
+            @RequestParam(value = "postalCode", required = false) String postalCode,
+            @RequestParam(value = "id_country", required = false) String id_country,
+            @RequestParam(value = "companyName", required = false) String companyName,
+            @RequestParam(value = "identificationNumber", required = false) String identificationNumber,
+            @RequestParam(value = "vendorDescription") String vendorDescription,
+            @RequestParam(value = "shopLink", required = false) String shopLink,
+            @RequestParam(value = "id_user") String id_user,
+            @RequestParam(value = "countries") List<String> countries,
+            @RequestParam(value = "files") List<MultipartFile> files) {
 
         return vendorService.saveVendor(addressLine1, addressLine2, city, postalCode, id_country,
                 companyName, identificationNumber, vendorDescription, shopLink, id_user, countries, files);
     }
 
     @PutMapping("/approve/{id}")
-    public ResponseEntity<String> approveVendor(@PathVariable long id) {
-        ResponseEntity<String> responseEntity = vendorService.approveVendor(id);
+    public ResponseEntity<?> approveVendor(@PathVariable long id) {
+        ResponseEntity<?> responseEntity = vendorService.approveVendor(id);
         return responseEntity;
     }
 

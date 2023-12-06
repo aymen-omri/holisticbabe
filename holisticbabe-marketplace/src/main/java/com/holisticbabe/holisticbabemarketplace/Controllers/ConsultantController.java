@@ -19,10 +19,14 @@ public class ConsultantController {
     private final ConsultantService consultantService;
 
     @PostMapping("/add/user/{id_user}")
-    public ResponseEntity<String> addConsultant(@PathVariable("id_user") long userId,
+    public ResponseEntity<?> addConsultant(
+            @PathVariable("id_user") long userId,
             @RequestParam("files") List<MultipartFile> files,
-            @RequestParam("description") String description) {
-        return consultantService.addConsultant(userId, files, description);
+            @RequestParam("description") String description,
+            @RequestParam("demoUrl") String demoUrl,
+            @RequestParam("demoVideoType") String demoVideoType,
+            @RequestParam("demoVideoName") String demoVideoName) {
+        return consultantService.addConsultant(userId, demoUrl, demoVideoType, demoVideoName, files, description);
     }
 
     @GetMapping("/{id}")
@@ -40,8 +44,13 @@ public class ConsultantController {
     }
 
     @PostMapping("/approve/{id}")
-    public ResponseEntity<String> approveConsultant(@PathVariable("id") long id) {
+    public ResponseEntity<?> approveConsultant(@PathVariable("id") long id) {
         return consultantService.approveConsultant(id);
+    }
+
+    @PostMapping("/reject/{id}")
+    public ResponseEntity<?> rejectConsultant(@PathVariable("id") long id) {
+        return consultantService.rejectConsultant(id);
     }
 
     @GetMapping("/all")
@@ -50,10 +59,10 @@ public class ConsultantController {
     }
 
     @GetMapping("/isApproved/{id}")
-    public boolean isConsultantApproved(@PathVariable("id") long id) {
+    public int isConsultantApproved(@PathVariable("id") long id) {
         return consultantService.isApproved(id);
     }
-    
+
     @GetMapping("/files/{id}")
     public ResponseEntity<List<MultimediaDto>> getConsultantFiles(@PathVariable long id) {
         return ResponseEntity.ok(consultantService.getConsultantFiles(id));

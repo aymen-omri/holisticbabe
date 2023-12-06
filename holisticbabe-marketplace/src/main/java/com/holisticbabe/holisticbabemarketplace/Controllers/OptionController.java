@@ -1,5 +1,6 @@
 package com.holisticbabe.holisticbabemarketplace.Controllers;
 
+import com.holisticbabe.holisticbabemarketplace.Dtos.OptionDto;
 import com.holisticbabe.holisticbabemarketplace.Models._Option;
 import com.holisticbabe.holisticbabemarketplace.Services.OptionService;
 import lombok.RequiredArgsConstructor;
@@ -16,16 +17,16 @@ public class OptionController {
     private final OptionService optionService;
 
     @GetMapping("/question/{id}")
-    public List<_Option> getQuestionOptions(@PathVariable long id) {
+    public List<OptionDto> getQuestionOptions(@PathVariable long id) {
         return optionService.getQuestionOptions(id);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<_Option> getOptionById(@PathVariable long id) {
-        _Option option = optionService.getOptionById(id);
-        if (option != null) {
+    public ResponseEntity<OptionDto> getOptionById(@PathVariable long id) {
+        try {
+            OptionDto option = optionService.getOptionById(id);
             return ResponseEntity.ok(option);
-        } else {
+        } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
     }
@@ -33,7 +34,7 @@ public class OptionController {
     @PostMapping("/add")
     public ResponseEntity<?> addOption(@RequestBody _Option option) {
         try {
-            _Option addedOption = optionService.addOption(option);
+            OptionDto addedOption = optionService.addOption(option);
             return ResponseEntity.status(201).body(addedOption);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Problem while inserting option!");

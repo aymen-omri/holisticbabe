@@ -4,16 +4,17 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
+import com.holisticbabe.holisticbabemarketplace.Dtos.QuestionDto;
 import com.holisticbabe.holisticbabemarketplace.Models.Question;
 
 public interface QuestionService {
-    List<Question> getCourseQuestions(long id);
+    List<QuestionDto> getQuizQuestions(long id);
 
-    Question getQuestionById(long id);
+    QuestionDto getQuestionById(long id);
 
-    Question addQuestion(Question question);
+    QuestionDto addQuestion(Question question);
 
-    void deleteQuestion(long id);
+    void deleteQuestion(long id_question);
 
     ResponseEntity<String> updateQuestion(long id, Question question);
 }

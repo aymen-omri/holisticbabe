@@ -8,6 +8,7 @@ import java.util.Optional;
 import com.holisticbabe.holisticbabemarketplace.Dtos.SocialMediaDto;
 import com.holisticbabe.holisticbabemarketplace.Models.SocialMedia;
 import com.holisticbabe.holisticbabemarketplace.Repositories.SocialMediaRepository;
+import com.holisticbabe.holisticbabemarketplace.Requests.SuccessMessageRequest;
 import com.holisticbabe.holisticbabemarketplace.Services.SocialMediaService;
 
 import jakarta.transaction.Transactional;
@@ -41,13 +42,13 @@ public class SocialMediaServiceImpl implements SocialMediaService {
     }
 
     @Override
-    public void save(SocialMediaDto socialMedia) {
-        socialMediaRepository.save(modelMapper.map(socialMedia, SocialMedia.class));
+    public void save(SocialMedia socialMedia) {
+        socialMediaRepository.save(socialMedia);
     }
 
     @Override
     @Transactional
-    public ResponseEntity<String> update(SocialMediaDto socialMedia, long id) {
+    public ResponseEntity<?> update(SocialMediaDto socialMedia, long id) {
         SocialMedia existingSocialMedia = socialMediaRepository.findById(id).orElse(null);
         if (existingSocialMedia == null) {
             return ResponseEntity.notFound().build();
@@ -56,7 +57,7 @@ public class SocialMediaServiceImpl implements SocialMediaService {
         existingSocialMedia.setInstagramLink(socialMedia.getInstagramLink());
         existingSocialMedia.setTiktokLink(socialMedia.getTiktokLink());
         existingSocialMedia.setLinkedinLink(socialMedia.getLinkedinLink());
-        return ResponseEntity.ok("Updated successfully!");
+        return ResponseEntity.ok(new SuccessMessageRequest(200 , "updated successfully!"));
     }
 
 }

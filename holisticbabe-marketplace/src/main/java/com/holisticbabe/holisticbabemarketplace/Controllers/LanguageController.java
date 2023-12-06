@@ -1,14 +1,17 @@
 package com.holisticbabe.holisticbabemarketplace.Controllers;
 
+import com.holisticbabe.holisticbabemarketplace.Dtos.LanguageDto;
 import com.holisticbabe.holisticbabemarketplace.Models.Language;
 import com.holisticbabe.holisticbabemarketplace.Services.LanguageService;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/language")
+@RequestMapping("/api/v1/language")
 public class LanguageController {
 
     private final LanguageService languageService;
@@ -18,14 +21,18 @@ public class LanguageController {
     }
 
     @GetMapping("/all")
-    public List<Language> getAllLanguages() {
+    public List<LanguageDto> getAllLanguages() {
         return languageService.getAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Language> getLanguageById(@PathVariable long id) {
-        Language language = languageService.getById(id);
-        return language != null ? ResponseEntity.ok(language) : ResponseEntity.notFound().build();
+    public ResponseEntity<LanguageDto> getLanguageById(@PathVariable long id) {
+        try {
+            LanguageDto language = languageService.getById(id);
+            return language != null ? ResponseEntity.ok(language) : ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PostMapping("/add")

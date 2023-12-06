@@ -23,6 +23,7 @@ import com.holisticbabe.holisticbabemarketplace.Repositories.CountryRepository;
 import com.holisticbabe.holisticbabemarketplace.Repositories.MultimediaRepository;
 import com.holisticbabe.holisticbabemarketplace.Repositories.UserRepository;
 import com.holisticbabe.holisticbabemarketplace.Repositories.VendorRepository;
+import com.holisticbabe.holisticbabemarketplace.Requests.SuccessMessageRequest;
 import com.holisticbabe.holisticbabemarketplace.Services.VendorService;
 import com.holisticbabe.holisticbabemarketplace.Utlis.FileUploadService;
 
@@ -50,12 +51,23 @@ public class VendorServiceImpl implements VendorService {
     }
 
     @Override
-    public ResponseEntity<String> saveVendor(String addressLine1, String addressLine2, String city, String postalCode,
-            long id_country, String companyName, String identificationNumber, String vendorDescription, String shopLink,
-            long id_user, List<String> countries, List<MultipartFile> files) {
-        _User user = userRepository.findById(id_user).orElse(null);
+    public ResponseEntity<?> saveVendor(String addressLine1, String addressLine2, String city, String postalCode,
+            String id_country, String companyName, String identificationNumber, String vendorDescription,
+            String shopLink,
+            String id_user, List<String> countries, List<MultipartFile> files) {
+        _User user = userRepository.findById(Long.valueOf(id_user)).orElse(null);
         if (user == null) {
             return ResponseEntity.notFound().build();
+        }
+        Vendor existingVendor = vendorRepository.getByUserId(user.getId_user()).orElse(null);
+        if (existingVendor != null) {
+            if (existingVendor.getApproved() == 0) {
+                return ResponseEntity.badRequest().body("Vendor already exists and is not approved");
+            } else if (existingVendor.getApproved() == 1) {
+                return ResponseEntity.badRequest().body("You have an active vendor");
+            } else {
+                vendorRepository.deleteById(existingVendor.getId_vendor());
+            }
         }
 
         Address companyAddress = new Address();
@@ -64,11 +76,11 @@ public class VendorServiceImpl implements VendorService {
         companyAddress.setAddressType(AddressType.SocietyAddress);
         companyAddress.setCity(city);
         companyAddress.setPostalCode(postalCode);
-        companyAddress.setCountry(countryRepository.findById(id_country).get());
+        companyAddress.setCountry(countryRepository.findById(Long.valueOf(id_country)).get());
         Address savedCompanyAddress = addressRepository.save(companyAddress);
 
         Vendor vendor = new Vendor();
-        vendor.setApproved(false);
+        vendor.setApproved(0);
         vendor.setCompanyAddress(savedCompanyAddress);
         vendor.setSocietyIdentificationNumber(identificationNumber);
         vendor.setDescription(vendorDescription);
@@ -98,17 +110,27 @@ public class VendorServiceImpl implements VendorService {
                 return ResponseEntity.status(500).body("Error while uploading files");
             }
         }
-        return ResponseEntity.ok("Saved successfully!");
+        return ResponseEntity.ok(new SuccessMessageRequest(200, "Saved successfully!"));
     }
 
     @Override
-    public ResponseEntity<String> approveVendor(long id) {
+    public ResponseEntity<?> approveVendor(long id) {
         Optional<Vendor> vendorToApprove = vendorRepository.findById(id);
         if (vendorToApprove.isEmpty()) {
             return ResponseEntity.status(404).body("Vendor doesn't exist!");
         }
-        vendorToApprove.get().setApproved(true);
-        return ResponseEntity.ok("Approved Successfully");
+        vendorToApprove.get().setApproved(1);
+        return ResponseEntity.ok(new SuccessMessageRequest(200, "Approved Successfully"));
+    }
+
+    @Override
+    public ResponseEntity<?> rejectVendor(long id) {
+        Optional<Vendor> vendorToApprove = vendorRepository.findById(id);
+        if (vendorToApprove.isEmpty()) {
+            return ResponseEntity.status(404).body("Vendor doesn't exist!");
+        }
+        vendorToApprove.get().setApproved(2);
+        return ResponseEntity.ok(new SuccessMessageRequest(200, "Vendor rejected"));
     }
 
     @Override

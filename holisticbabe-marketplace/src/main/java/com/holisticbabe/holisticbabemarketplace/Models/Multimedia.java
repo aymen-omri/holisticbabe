@@ -38,4 +38,10 @@ public class Multimedia {
 
     @ManyToOne
     private Category category;
+
+    @ManyToOne
+    private Course course;
+
+    @ManyToOne
+    private Lesson lesson;
 }

@@ -12,19 +12,19 @@ public interface VendorService {
 
     VendorDto getVendorById(long id);
 
-    VendorDto getVendorByUserId(long id); 
+    VendorDto getVendorByUserId(long id);
 
-    ResponseEntity<String> saveVendor(
+    ResponseEntity<?> saveVendor(
             String addressLine1,
             String addressLine2,
             String city,
             String postalCode,
-            long id_country,
+            String id_country,
             String companyName,
             String identificationNumber,
             String vendorDescription,
             String shopLink,
-            long id_user,
+            String id_user,
             List<String> countries,
             List<MultipartFile> files);
 
@@ -32,7 +32,9 @@ public interface VendorService {
 
     List<MultimediaDto> getVendorFiles(long id);
 
-    ResponseEntity<String> approveVendor(long id);
+    ResponseEntity<?> approveVendor(long id);
+
+    ResponseEntity<?> rejectVendor(long id);
 
     List<VendorDto> getAllVendors();
 

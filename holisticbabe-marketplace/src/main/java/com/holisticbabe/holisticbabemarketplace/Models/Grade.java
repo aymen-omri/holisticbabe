@@ -9,6 +9,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -18,14 +19,15 @@ public class Grade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id_grade;
-    private String grade;
+    private double grade;
+    private LocalDate gradeDate;
 
     @ManyToOne
     @JoinColumn(name = "id_user")
     private _User user;
 
     @ManyToOne
-    @JoinColumn(name = "id_course")
-    private Course course;
+    @JoinColumn(name = "id_quiz")
+    private Quiz quiz;
 
 }
