@@ -7,8 +7,6 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -24,7 +22,10 @@ public class Category {
     @Pattern(regexp = "^[a-zA-Z0-9 ]+$")
     private String name;
     private String description;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime dateCreated;
+
+    @OneToOne
+    @JoinColumn(name = "id_multi")
+    private Multimedia image;
 
 }

@@ -58,7 +58,10 @@ public class PromotionServiceImpl implements PromotionService {
             Promotion existingPromotion = getPromotionById(promotionId);
 
             existingPromotion.setName(newPromotion.getName());
-            existingPromotion.setDescription(newPromotion.getDescription());
+            existingPromotion.setDiscount(newPromotion.getDiscount());
+            existingPromotion.setStartDate(newPromotion.getStartDate());
+            existingPromotion.setEndDate(newPromotion.getEndDate());
+            existingPromotion.setStatus(newPromotion.getStatus());
 
             return promotionRepository.save(existingPromotion);
         } catch (EntityNotFoundException ex) {
@@ -82,48 +85,28 @@ public class PromotionServiceImpl implements PromotionService {
 
     @Override
     public Promotion addProductToPromotion(Long promotionId, Long productId) {
-        try {
-            Promotion promotion = promotionRepository.findById(promotionId)
+        Promotion promotion = promotionRepository.findById(promotionId)
                     .orElseThrow(() -> new EntityNotFoundException("Promotion not found"));
 
             Product product = productRepository.findById(productId)
                     .orElseThrow(() -> new EntityNotFoundException("Product not found"));
 
-            promotion.getProducts().add(product);
-            promotion.setActive(true);
+//promotion.getProducts().add(product);
 
             return promotionRepository.save(promotion);
-        } catch (EntityNotFoundException ex) {
-            ex.printStackTrace();
-            throw ex;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("An error occurred while adding a product to the promotion.");
-        }
+
     }
 
     @Override
     public void removeProductFromPromotion(Long promotionId, Long productId) {
-        try {
-            Promotion promotion = promotionRepository.findById(promotionId)
+        Promotion promotion = promotionRepository.findById(promotionId)
                     .orElseThrow(() -> new EntityNotFoundException("Promotion not found"));
 
             Product product = productRepository.findById(productId)
                     .orElseThrow(() -> new EntityNotFoundException("Product not found"));
 
-            promotion.getProducts().remove(product);
-
-            if (promotion.getProducts().isEmpty()) {
-                promotion.setActive(false);
-            }
-
+            //promotion.getProducts().remove(product);
             promotionRepository.save(promotion);
-        } catch (EntityNotFoundException ex) {
-            ex.printStackTrace();
-            throw ex;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("An error occurred while removing a product from the promotion.");
-        }
+
     }
 }

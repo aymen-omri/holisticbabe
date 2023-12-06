@@ -27,10 +27,10 @@ public class ReviewController {
 
     @PostMapping("/add")
     public ResponseEntity<?> createReview(@RequestBody Review review) {
-        try {
+        try{
             reviewService.createReview(review);
-            return ResponseEntity.ok("Review added successfully!");
-        } catch (Exception e) {
+            return ResponseEntity.ok("return ok");
+        }catch(Exception e){
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
@@ -45,26 +45,28 @@ public class ReviewController {
         reviewService.deleteReview(reviewId);
     }
 
-    @PostMapping("/{reviewId}/like")
-    public ResponseEntity<Review> addLike(@PathVariable Long reviewId) {
-        Review review = reviewService.likeReview(reviewId);
-        return ResponseEntity.ok(review);
-    }
+   @GetMapping("/countReviews")
+    public   int countReviews(@PathVariable Long productId){
+      return  reviewService.countReviews(productId);
+   }
 
-    @PostMapping("/{reviewId}/dislike")
-    public ResponseEntity<Review> addDislike(@PathVariable Long reviewId) {
-        Review review = reviewService.dislikeReview(reviewId);
-        return ResponseEntity.ok(review);
+    @GetMapping("/{productId}/rating")
+    public ResponseEntity<Double> getProductRating(@PathVariable Long productId) {
+        double productRating = reviewService.calculateProductRating(productId);
+        if (productRating >= 0.0) {
+            return ResponseEntity.ok(productRating);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
-
-    @GetMapping("/{ReviewId}/countLike")
-    public long countLike(@PathVariable long reviewId) {
-        return reviewService.countLikeForReview(reviewId);
-    }
-
-    @GetMapping("/{ReviewId}/countDisLike")
-    public long countDislike(@PathVariable long reviewId) {
-        return reviewService.countDislikesForReview(reviewId);
+    @GetMapping("/{productId}/reviews")
+    public ResponseEntity<List<Review>> getProductReviews(@PathVariable Long productId) {
+        List<Review> reviews = reviewService.getReviewsByProductId(productId);
+        if (reviews.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(reviews);
+        }
     }
 
 }

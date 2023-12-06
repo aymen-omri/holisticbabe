@@ -23,6 +23,7 @@ email verification:
 {
     "email": "saghrounimaha@gmail.com",
     "token":123456789
+<<<<<<< HEAD
 }
 
 quiz: 
@@ -95,3 +96,6 @@ subject :
     "name":"subject 1",
     "description":"this is a subject"
 }
+=======
+}
+>>>>>>> product-change

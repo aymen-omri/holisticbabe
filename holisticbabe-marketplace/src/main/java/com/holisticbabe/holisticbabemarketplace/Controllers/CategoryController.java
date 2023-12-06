@@ -10,10 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/category")
+@RequestMapping("/api/categories")
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
@@ -34,12 +35,16 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createCategory(@RequestParam("name") String name , @RequestParam("description") String description ,@RequestPart ("image")MultipartFile image) {
+    public ResponseEntity<?> createCategory(
+            @RequestParam("name") String name,
+            @RequestParam("description") String description,
+            @RequestPart("image") MultipartFile image) {
         try {
-            CategoryRequest categoryRequest = new CategoryRequest() ; 
-            categoryRequest.setName(name);
-            categoryRequest.setDescription(description);
-            Category createdCategory = categoryService.save(categoryRequest,image);
+            CategoryRequest category1 = new CategoryRequest();
+            category1.setName(name);
+            category1.setDescription(description);
+            category1.setDateCreated(LocalDateTime.now());
+            Category createdCategory = categoryService.save(category1, image);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdCategory);
         } catch (Exception e) {
             return ResponseEntity.status(500).body(e.getMessage());
@@ -49,15 +54,21 @@ public class CategoryController {
     @PutMapping("/{categoryId}")
     public ResponseEntity<Category> updateCategory(
             @PathVariable Long categoryId,
-            @RequestPart CategoryRequest categoryRequest,
-            @RequestParam(value = "image", required = false) MultipartFile image) {
+            @RequestParam(name="name",required = false) String name,
+            @RequestParam(name="description",required = false) String description,
+            @RequestParam(value = "newImage", required = false) MultipartFile newImage
+    ) {
         try {
-            Category updatedCategory = categoryService.updateCategory(categoryId, categoryRequest, image);
-            return ResponseEntity.ok(updatedCategory);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
+            CategoryRequest category1 = new CategoryRequest();
+            category1.setName(name);
+            category1.setDescription(description);
+            category1.setDateCreated(LocalDateTime.now());
+            Category updatedCategory = categoryService.updateCategory(categoryId, category1, newImage);
+            return new ResponseEntity<>(updatedCategory, HttpStatus.OK);
+        } catch (EntityNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -82,5 +93,6 @@ public class CategoryController {
         int productCount = categoryService.getProductCountInCategory(categoryId);
         return ResponseEntity.ok(productCount);
     }
+
 
 }

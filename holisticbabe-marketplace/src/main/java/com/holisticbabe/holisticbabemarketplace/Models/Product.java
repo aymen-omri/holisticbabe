@@ -1,7 +1,8 @@
 package com.holisticbabe.holisticbabemarketplace.Models;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -31,34 +32,36 @@ public class Product {
     @NotBlank
     @Size(min = 10)
     private String description;
+    private String ShortDescription;
+    private int quantityInStock;
+    private String sku;
     @NotNull
     private BigDecimal price;
-    private String SKU;
-    private int quantityInStock;
-    private String color;
-    private String size;
-    private String material;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime dateCreated;
+    private LocalDate dateCreated;
+    private Date dateProduction;
+    private int isApproved;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_category")
     private Category category;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<Review> reviews;
 
-    @ManyToMany
-    private List<Promotion> promotions;
+    @ManyToOne
+    private Promotion promotions;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<Multimedia> images;
 
     @ManyToOne
     @JoinColumn(name = "id_user")
     private _User owner;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<ProductItem> productItems;
 
 }

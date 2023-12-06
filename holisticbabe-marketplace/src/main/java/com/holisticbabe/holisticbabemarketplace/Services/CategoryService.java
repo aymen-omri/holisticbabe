@@ -13,7 +13,8 @@ public interface CategoryService {
 
     Category getById(Long id);
 
-    Category updateCategory(Long categoryId, CategoryRequest categoryRequest, MultipartFile image);
+    Category updateCategory(Long categoryId, CategoryRequest categoryRequest, MultipartFile newImage);
+
     void deleteById(Long id);
 
     List<Category> searchCategoriesByName(String searchQuery);

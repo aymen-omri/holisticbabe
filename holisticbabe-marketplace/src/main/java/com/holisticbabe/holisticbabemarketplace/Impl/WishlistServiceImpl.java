@@ -19,6 +19,7 @@ public class WishlistServiceImpl implements WishlistService {
     private WishlistRepository wishlistRepository;
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
 
     @Override
     public List<Wishlist> getAll() {

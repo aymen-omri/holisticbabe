@@ -1,7 +1,6 @@
 package com.holisticbabe.holisticbabemarketplace.Models;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,16 +20,15 @@ public class Review {
     private long id_review;
     private String comment;
     private Integer value;
-    private  Boolean likeReview;
-    private Boolean dislikeReview;
     private String pros;
     private String cons;
-    @ManyToOne(fetch = FetchType.EAGER)
+
+    @ManyToOne
     @JoinColumn(name = "id_user")
     private _User user;
 
     //@JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "id_product")
     private Product product;
 

@@ -2,12 +2,7 @@ package com.holisticbabe.holisticbabemarketplace.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,11 +32,12 @@ public class Multimedia {
     private Vendor vendor;
 
     @ManyToOne
-    private Category category;
-
-    @ManyToOne
     private Course course;
 
     @ManyToOne
     private Lesson lesson;
+    @JsonIgnore
+    
+    @OneToOne(mappedBy = "image")
+    private  Category category;
 }

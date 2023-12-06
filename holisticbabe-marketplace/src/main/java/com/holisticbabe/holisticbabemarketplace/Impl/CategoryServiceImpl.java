@@ -10,10 +10,8 @@ import com.holisticbabe.holisticbabemarketplace.Requests.CategoryRequest;
 import com.holisticbabe.holisticbabemarketplace.Services.CategoryService;
 import com.holisticbabe.holisticbabemarketplace.Utlis.FileUploadService;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -45,27 +43,25 @@ public class CategoryServiceImpl implements CategoryService {
         category.setDescription(categoryRequest.getDescription());
         category.setDateCreated(LocalDateTime.now());
 
-        Category saveCategory = categoryRepository.save(category);
-        saveCategoryImages(saveCategory, image);
-
-        return categoryRepository.findById(saveCategory.getId_category()).orElse(null);
+      Category savedCategory=  saveCategoryImages(category, image);
+      return  savedCategory;
     }
 
 
-    private void saveCategoryImages(Category category, MultipartFile image) {
-            String url = null;
-            try {
-                url = fileUploadService.uploadFile(image, "category-multimedia");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            Multimedia imageToSave = new Multimedia();
-            imageToSave.setName(image.getOriginalFilename());
-            imageToSave.setType(image.getContentType());
-            imageToSave.setUrl(url);
-            imageToSave.setCategory(category);
-            multimediaRepository.save(imageToSave);
-        ;
+    private Category saveCategoryImages(Category category, MultipartFile image) {
+        String url = null;
+        try {
+            url = fileUploadService.uploadFile(image, "category-multimedia");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Multimedia imageToSave = new Multimedia();
+        imageToSave.setName(image.getOriginalFilename());
+        imageToSave.setType(image.getContentType());
+        imageToSave.setUrl(url);
+       Multimedia multimedia= multimediaRepository.save(imageToSave);
+        category.setImage(multimedia);
+        return categoryRepository.save(category);
     }
     @Override
     public Category getById(Long id) {
@@ -74,7 +70,6 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     @Override
-    @Transactional
     public Category updateCategory(Long categoryId, CategoryRequest categoryRequest, MultipartFile newImage) {
         Category existingCategory = categoryRepository.findById(categoryId).orElse(null);
 
@@ -82,34 +77,21 @@ public class CategoryServiceImpl implements CategoryService {
             throw new EntityNotFoundException("Category not found");
         }
 
-        deleteOldImage(existingCategory);
+      //  deleteOldImage(existingCategory);
 
-        if (!StringUtils.isEmpty(categoryRequest.getName())) {
             existingCategory.setName(categoryRequest.getName());
-        }
-
-        if (!StringUtils.isEmpty(categoryRequest.getDescription())) {
             existingCategory.setDescription(categoryRequest.getDescription());
-        }
-
-        if (categoryRequest.getDateCreated() != null) {
             existingCategory.setDateCreated(categoryRequest.getDateCreated());
-        }
 
-        // Save new image
-        if (newImage != null) {
-            saveCategoryImages(existingCategory, newImage);
-        }
-
-        return categoryRepository.save(existingCategory);
+        return saveCategoryImages(existingCategory, newImage);
     }
 
     private void deleteOldImage(Category category) {
         Multimedia oldImage = multimediaRepository.findByCategory(category);
-        if (oldImage != null) {
             multimediaRepository.delete(oldImage);
-        }
+
     }
+
 
     @Override
     public void deleteById(Long id) {
@@ -118,14 +100,14 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
 
-     // search Category by name
+    // search Category by name
 
     @Override
     public List<Category> searchCategoriesByName(String searchQuery) {
         return categoryRepository.findByNameContainingIgnoreCase(searchQuery);
     }
 
-     // count product in category
+    // count product in category
 
     @Override
     public int getProductCountInCategory(Long categoryId) {
@@ -137,4 +119,7 @@ public class CategoryServiceImpl implements CategoryService {
             return 0;
         }
     }
+
+
+
 }

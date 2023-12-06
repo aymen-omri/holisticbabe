@@ -5,18 +5,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductShop {
-    private Long id;
-    private String name;
+public class ProductItemRequest {
+    // private List<String> variationOptions;
+    private List<String> options;
+    private String sku;
+    private int quantity;
     private BigDecimal price;
-    private String categoryName;
-    private double averageRating;
-    private BigDecimal maxDiscount;
-    private String imageUrl;
-    private int quantityInStock;
-
-
 }
