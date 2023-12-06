@@ -9,7 +9,4 @@ public class HolisticbabeMarketplaceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(HolisticbabeMarketplaceApplication.class, args);
 	}
-
-
-
 }

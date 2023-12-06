@@ -77,8 +77,10 @@ public class ResetPasswordImpl implements ResetPasswordService {
 
     @Override
     public ResponseEntity<String> resetPassword(ResetPasswordRequest request) {
-        _User user = userRepository.findByEmail(request.getEmail()).get();
-
+        _User user = userRepository.findByEmail(request.getEmail()).orElse(null);
+        if (user == null) {
+            return ResponseEntity.status(404).body("No such user exists!");
+        }
         if (request.getNewPassword().equals(request.getConfirmPassword()) &&
                 request.getTokenText().equals(user.getToken().getToken())) {
 

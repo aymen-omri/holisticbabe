@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
 
+import com.holisticbabe.holisticbabemarketplace.Dtos.UserDto;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,7 +30,7 @@ import lombok.NonNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class _User implements UserDetails {
+public class _User  implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

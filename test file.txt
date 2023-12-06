@@ -18,3 +18,9 @@ country:
 {
 "countryName":"Tunisie"
 }
+
+email verification:
+{
+    "email": "saghrounimaha@gmail.com",
+    "token":123456789
+}

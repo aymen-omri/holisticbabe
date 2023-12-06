@@ -31,4 +31,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleNullExceptions(Exception e) {
         return new ResponseEntity<>("You didn't fill a required field!", null, 400);
     }
+
+    /*@ExceptionHandler(RuntimeException.class)
+        public ResponseEntity<String> handleRunTimeExceptions(Exception e) {
+        return new ResponseEntity<>("RunTime Exception!", null, 400);
+    }*/
 }
