@@ -1,5 +1,6 @@
 package com.holisticbabe.holisticbabemarketplace.Services;
 
+import com.holisticbabe.holisticbabemarketplace.Dtos.WishlistDto;
 import com.holisticbabe.holisticbabemarketplace.Models.Wishlist;
 
 import java.util.List;
@@ -7,12 +8,12 @@ import java.util.List;
 public interface WishlistService {
     List<Wishlist> getAll();
 
-    Wishlist addProductToWishlist(Long wishlistId, Long productId);
-
-    void removeProductFromWishlist(Long wishlistId, Long productId);
+    WishlistDto addProductToWishlist(WishlistDto wishlistDto) ;
 
     Wishlist addWishlist(Wishlist wishlist);
 
-    Long countProductsInWishlist(Long wishlistId);
+    List<WishlistDto> getWishlistUserId(Long userId);
+     void deleteWishlistById(Long wishlistId);
+    int countWishlistItems(Long userId);
 
 }

@@ -1,7 +1,9 @@
 package com.holisticbabe.holisticbabemarketplace.Controllers;
 
+import com.holisticbabe.holisticbabemarketplace.Dtos.WishlistDto;
 import com.holisticbabe.holisticbabemarketplace.Models.Wishlist;
 import com.holisticbabe.holisticbabemarketplace.Services.WishlistService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,25 +27,33 @@ public class WishlistController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdWishlist);
     }
 
-    @PostMapping("/{wishlistId}/{productId}")
-    public ResponseEntity<Void> addProductToWishlist(
-            @PathVariable Long wishlistId,
-            @PathVariable Long productId) {
-        wishlistService.addProductToWishlist(wishlistId, productId);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    @PostMapping("/add")
+    public ResponseEntity<?> addProductToWishlist(@RequestBody WishlistDto wishlistDto) {
+        try {
+            WishlistDto result = wishlistService.addProductToWishlist(wishlistDto);
+            return ResponseEntity.ok(result);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
+        }
     }
 
-    @DeleteMapping("/{wishlistId}/products/{productId}")
-    public ResponseEntity<Void> removeProductFromWishlist(
-            @PathVariable Long wishlistId,
-            @PathVariable Long productId) {
-        wishlistService.removeProductFromWishlist(wishlistId, productId);
-        return ResponseEntity.noContent().build();
+    @GetMapping("/user/{userId}")
+    public List<WishlistDto> getWishlistByUserId(@PathVariable Long userId) {
+        return wishlistService.getWishlistUserId(userId);
     }
 
-    @GetMapping("/{wishlistId}/count")
-    public ResponseEntity<Long> countProductsInWishlist(@PathVariable Long wishlistId) {
-        Long count = wishlistService.countProductsInWishlist(wishlistId);
+
+
+    @GetMapping("/count/{userId}")
+    public ResponseEntity<Integer> countWishlistItems(@PathVariable Long userId) {
+        int count = wishlistService.countWishlistItems(userId);
         return ResponseEntity.ok(count);
+    }
+
+    @DeleteMapping("/{wishlistId}")
+    public void deleteWishlist(@PathVariable Long wishlistId) {
+        wishlistService.deleteWishlistById(wishlistId);
     }
 }

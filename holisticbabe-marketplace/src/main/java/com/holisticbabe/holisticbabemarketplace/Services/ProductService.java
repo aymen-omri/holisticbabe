@@ -4,6 +4,7 @@ import com.holisticbabe.holisticbabemarketplace.Dtos.ProductDto;
 import com.holisticbabe.holisticbabemarketplace.Models.Product;
 import com.holisticbabe.holisticbabemarketplace.Models.Multimedia;
 
+import com.holisticbabe.holisticbabemarketplace.Requests.ProductPromotionRequest;
 import com.holisticbabe.holisticbabemarketplace.Requests.ProductRequest;
 import com.holisticbabe.holisticbabemarketplace.Requests.ProductShop;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,7 +17,7 @@ public interface ProductService {
 
     Product getProductById(Long id);
 
-    Product addProductWithItems(ProductRequest productRequest/* Long id_user */, Long id_category);
+    Product addProductWithItems(ProductRequest productRequest, Long id_user , Long id_category);
 
     void deleteProduct(Long id);
 
@@ -38,4 +39,13 @@ public interface ProductService {
     ProductDto searchProductsByName(String name);
 
     List<ProductShop> listProductShop();
+
+    List<ProductDto> getUserProducts(long id);
+    List<ProductShop> getUserProductsShop(long id);
+
+    Product updateProductClient(Long id, Product updatedProduct,Long CategoryId);
+
+    List<ProductPromotionRequest> getProductsWithPromotionAndImagesByOwnerId(Long ownerId);
+    long countUserProductsShop(long id);
+    long countPromotionByUserId(long userId);
 }

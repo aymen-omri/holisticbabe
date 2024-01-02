@@ -1,16 +1,20 @@
 package com.holisticbabe.holisticbabemarketplace.Impl;
 
+import com.holisticbabe.holisticbabemarketplace.Dtos.WishlistDto;
+import com.holisticbabe.holisticbabemarketplace.Models._User;
 import com.holisticbabe.holisticbabemarketplace.Repositories.ProductRepository;
+import com.holisticbabe.holisticbabemarketplace.Repositories.UserRepository;
 import com.holisticbabe.holisticbabemarketplace.Repositories.WishlistRepository;
 import com.holisticbabe.holisticbabemarketplace.Models.Product;
 import com.holisticbabe.holisticbabemarketplace.Models.Wishlist;
 import com.holisticbabe.holisticbabemarketplace.Services.WishlistService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class WishlistServiceImpl implements WishlistService {
@@ -20,89 +24,63 @@ public class WishlistServiceImpl implements WishlistService {
     @Autowired
     private ProductRepository productRepository;
     @Autowired
+    private UserRepository userRepository;
 
     @Override
     public List<Wishlist> getAll() {
-        try {
             return wishlistRepository.findAll();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("An error occurred while fetching all wishlists.");
-        }
+
     }
 
     public Wishlist addWishlist(Wishlist wishlist) {
-        try {
             return wishlistRepository.save(wishlist);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("An error occurred while creating the wishlist.");
-        }
+    }
+
+
+    @Override
+    public int countWishlistItems(Long userId) {
+        return wishlistRepository.countWishlistItems(userId);
     }
 
     @Override
-    public Wishlist addProductToWishlist(Long wishlistId, Long productId) {
-        try {
-            Wishlist wishlist = wishlistRepository.findById(wishlistId)
-                    .orElseThrow(() -> new EntityNotFoundException("Wishlist not found"));
+    public WishlistDto addProductToWishlist(WishlistDto wishlistDto) {
+        Long productId = wishlistDto.getIdProduct();
+        Long userId = wishlistDto.getIdUser();
+        System.out.println("productId: " + productId);
+        System.out.println("userId: " + userId);
+        if (productId == null || userId == null) {
+            throw new IllegalArgumentException("Product ID and User ID must not be null");
+        }
+        Optional<Product> optionalProduct = productRepository.findById(productId);
+        Optional<_User> optionalUser = userRepository.findById(userId);
 
-            Product product = productRepository.findById(productId)
-                    .orElseThrow(() -> new EntityNotFoundException("Product not found"));
-
-            // Add the product to the wishlist
-            wishlist.getProducts().add(product);
-            wishlistRepository.save(wishlist);
-
-            return wishlist;
-        } catch (EntityNotFoundException ex) {
-            ex.printStackTrace();
-            throw ex;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("An error occurred while adding a product to the wishlist.");
+        if (optionalProduct.isPresent() && optionalUser.isPresent()) {
+            Wishlist wishlist = new Wishlist();
+            wishlist.setProduct(optionalProduct.get());
+            wishlist.setUser(optionalUser.get());
+            Wishlist savedWishlist = wishlistRepository.save(wishlist);
+            return savedWishlist.getWishlistDto();
+        } else {
+            throw new IllegalArgumentException("Product or User not found with the provided IDs");
         }
     }
 
     public Wishlist getWishlistById(Long wishlistId) {
-        try {
             return wishlistRepository.findById(wishlistId)
                     .orElseThrow(() -> new EntityNotFoundException("Wishlist not found with ID: " + wishlistId));
-        } catch (EntityNotFoundException ex) {
-            ex.printStackTrace();
-            throw ex;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("An error occurred while fetching the wishlist by ID.");
-        }
     }
 
-    public void removeProductFromWishlist(Long wishlistId, Long productId) {
-        try {
-            Wishlist wishlist = wishlistRepository.findById(wishlistId)
-                    .orElseThrow(() -> new EntityNotFoundException("Wishlist not found"));
 
-            Product productToRemove = wishlist.getProducts().stream()
-                    .filter(product -> Objects.equals(product.getId_product(), productId))
-                    .findFirst()
-                    .orElseThrow(() -> new EntityNotFoundException("Product not found in wishlist"));
 
-            wishlist.getProducts().remove(productToRemove);
-            wishlistRepository.save(wishlist);
-        } catch (EntityNotFoundException ex) {
-            ex.printStackTrace();
-            throw ex;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("An error occurred while removing a product from the wishlist.");
-        }
+
+
+    public List<WishlistDto> getWishlistUserId(Long userId) {
+        return  wishlistRepository.findAllByUserId(userId).stream().map(Wishlist::getWishlistDto).collect(Collectors.toList());
+
+
     }
 
-    public Long countProductsInWishlist(Long wishlistId) {
-        try {
-            return wishlistRepository.countProductsInWishlist(wishlistId);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("An error occurred while counting the products in the wishlist.");
-        }
+    public void deleteWishlistById(Long wishlistId) {
+        wishlistRepository.deleteById(wishlistId);
     }
 }

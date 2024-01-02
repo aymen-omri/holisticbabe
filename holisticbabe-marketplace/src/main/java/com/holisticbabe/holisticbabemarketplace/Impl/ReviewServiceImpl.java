@@ -1,20 +1,35 @@
 package com.holisticbabe.holisticbabemarketplace.Impl;
 
+import com.holisticbabe.holisticbabemarketplace.Dtos.ReviewDto;
+import com.holisticbabe.holisticbabemarketplace.Models.Product;
+import com.holisticbabe.holisticbabemarketplace.Models.Reply;
+import com.holisticbabe.holisticbabemarketplace.Models._User;
+import com.holisticbabe.holisticbabemarketplace.Repositories.ProductRepository;
+import com.holisticbabe.holisticbabemarketplace.Repositories.ReplyRepository;
 import com.holisticbabe.holisticbabemarketplace.Repositories.ReviewRepository;
 import com.holisticbabe.holisticbabemarketplace.Models.Review;
+import com.holisticbabe.holisticbabemarketplace.Repositories.UserRepository;
 import com.holisticbabe.holisticbabemarketplace.Services.ReviewService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
 
     @Autowired
     private ReviewRepository reviewRepository;
-
+    @Autowired
+    private ProductRepository productRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private ReplyRepository replyRepository;
     public List<Review> getAllReviews() {
         try {
             return reviewRepository.findAll();
@@ -37,9 +52,22 @@ public class ReviewServiceImpl implements ReviewService {
         }
     }
 
-    public void createReview(Review review) {
-         reviewRepository.save(review);
+    public ReviewDto giveReview(ReviewDto reviewDto) throws IOException {
+        Optional<Product>optionalProduct=productRepository.findById(reviewDto.getProductId());
+        Optional<_User>optionalUser=userRepository.findById(reviewDto.getUserId());
 
+        if(optionalProduct.isPresent()&&optionalUser.isPresent()){
+            Review review=new Review();
+            review.setValue(reviewDto.getValue());
+            review.setDateCreated(reviewDto.getDateCreated());
+            review.setComment(reviewDto.getComment());
+            review.setUser(optionalUser.get());
+            review.setProduct(optionalProduct.get());
+
+
+            return reviewRepository.save(review).getDto();
+        }
+        return  null;
     }
 
     public Review updateReview(Long reviewId, Review updatedReview) {
@@ -118,5 +146,21 @@ public class ReviewServiceImpl implements ReviewService {
         }
     }
 
+    public List<ReviewDto> getAllReviewsByProductId(Long productId) {
+        List<Review> reviews = reviewRepository.findReviewsByProductId(productId);
+        return reviews.stream()
+                .map(Review::getDto)
+                .collect(Collectors.toList());
+    }
 
+
+
+
+    public Double averageRatingByProduct(Long productId) {
+        return reviewRepository.averageRatingByProduct(productId);
+    }
+
+    public Double sumRatingValues() {
+        return reviewRepository.sumRatingValues();
+    }
 }

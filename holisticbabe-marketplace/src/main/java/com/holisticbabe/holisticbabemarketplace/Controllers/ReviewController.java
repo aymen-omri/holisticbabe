@@ -1,8 +1,11 @@
 package com.holisticbabe.holisticbabemarketplace.Controllers;
 
+import com.holisticbabe.holisticbabemarketplace.Dtos.ReviewDto;
+import com.holisticbabe.holisticbabemarketplace.Dtos.WishlistDto;
 import com.holisticbabe.holisticbabemarketplace.Models.Review;
 import com.holisticbabe.holisticbabemarketplace.Services.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,13 +29,15 @@ public class ReviewController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> createReview(@RequestBody Review review) {
-        try{
-            reviewService.createReview(review);
-            return ResponseEntity.ok("return ok");
-        }catch(Exception e){
-            return ResponseEntity.status(500).body(e.getMessage());
+    public ResponseEntity<?> addReviews(@RequestBody ReviewDto reviewDto) throws Exception {
+
+        ReviewDto result = reviewService.giveReview(reviewDto);
+
+        if (result == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to process the review");
         }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
     @PutMapping("/{reviewId}")
@@ -68,5 +73,24 @@ public class ReviewController {
             return ResponseEntity.ok(reviews);
         }
     }
+    @GetMapping("/by-product/{productId}")
+    public ResponseEntity<List<ReviewDto>> getAllReviewsByProductId(@PathVariable Long productId) {
+        List<ReviewDto> reviews = reviewService.getAllReviewsByProductId(productId);
+        return ResponseEntity.ok(reviews);
+    }
+
+
+
+    @GetMapping("/{productId}/reviews/average-rating")
+    public ResponseEntity<Double> averageRatingByProduct(@PathVariable Long productId) {
+        Double averageRating = reviewService.averageRatingByProduct(productId);
+        return ResponseEntity.ok(averageRating);
+    }
+    @GetMapping("/sum-rating-values")
+    public ResponseEntity<Double> sumRatingValues() {
+        Double sum = reviewService.sumRatingValues();
+        return ResponseEntity.ok(sum);
+    }
+
 
 }

@@ -1,10 +1,14 @@
 package com.holisticbabe.holisticbabemarketplace.Controllers;
 
+import com.holisticbabe.holisticbabemarketplace.Dtos.CourseDto;
 import com.holisticbabe.holisticbabemarketplace.Dtos.ProductDto;
 import com.holisticbabe.holisticbabemarketplace.Models.*;
+import com.holisticbabe.holisticbabemarketplace.Requests.ProductPromotionRequest;
 import com.holisticbabe.holisticbabemarketplace.Requests.ProductRequest;
 import com.holisticbabe.holisticbabemarketplace.Requests.ProductShop;
 import com.holisticbabe.holisticbabemarketplace.Services.ProductService;
+import com.holisticbabe.holisticbabemarketplace.Services.PromotionService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -21,6 +25,7 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+    private  final PromotionService promotionService;
 
     @GetMapping
     public List<ProductDto> getAllProducts() {
@@ -37,15 +42,15 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/add-with-items/{id_category}")
+    @PostMapping("/add-with-items/category/{id_category}/user/{id_user}")
     public ResponseEntity<?> addProductWithItems(
-           /* @RequestParam(value = "id_user", required = false) Long id_user,*/
+           @PathVariable  Long id_user,
             @PathVariable Long id_category,
             @RequestBody ProductRequest productRequest
             ) {
         try {
 
-            Product addedProduct = productService.addProductWithItems(productRequest, /* id_user*/ id_category);
+            Product addedProduct = productService.addProductWithItems(productRequest,id_user, id_category);
             return ResponseEntity.status(HttpStatus.CREATED).body(addedProduct);
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,11 +72,19 @@ public class ProductController {
 
 
     @PostMapping("/{productId}/images")
-    public ResponseEntity<Product> addImages(
+    public ResponseEntity<Product> saveProductImages(
             @PathVariable Long productId,
-            @RequestParam("images") MultipartFile images) throws IOException {
-        Product updatedProduct = productService.addNewImage(productId, images);
-        return ResponseEntity.ok(updatedProduct);
+            @RequestParam("images") List<MultipartFile> images
+    ) {
+        try {
+            Product product = productService.saveProductImages(productId, images);
+            return ResponseEntity.ok(product);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PostMapping("/{productId}/addImage")
@@ -132,8 +145,73 @@ public class ProductController {
     }
 
     @GetMapping("/getShopProduct")
-    public ResponseEntity<List<ProductShop>> getshop() {
+    public ResponseEntity<List<ProductShop>> getShop() {
         return ResponseEntity.ok(productService.listProductShop());
     }
 
+    @GetMapping("/user/{id}")
+    public ResponseEntity<List<ProductDto>> getUserProducts(@PathVariable long id) {
+        try {
+            List<ProductDto> productDtoList = productService.getUserProducts(id);
+            return new ResponseEntity<>(productDtoList, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    @GetMapping("/shop/user/{id}")
+    public ResponseEntity<List<ProductShop>> getUsershop(@PathVariable long id) {
+        try {
+            List<ProductShop> productList = productService.getUserProductsShop(id);
+            return new ResponseEntity<>(productList, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/{id}/category/{idCategory}")
+    public ResponseEntity<?> updateProductClient(@PathVariable Long id, @RequestBody Product updatedProduct,
+                                           @PathVariable Long idCategory ) {
+        Product updated = productService.updateProductClient(id, updatedProduct,idCategory);
+
+        if (updated == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(updated);
+    }
+
+
+
+    @GetMapping("/owner/{ownerId}")
+    public ResponseEntity<List<ProductPromotionRequest>> getProductsByOwnerId(@PathVariable Long ownerId) {
+        List<ProductPromotionRequest> products = productService.getProductsWithPromotionAndImagesByOwnerId(ownerId);
+
+        if (!products.isEmpty()) {
+            return new ResponseEntity<>(products, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/count/{userId}")
+    public long countUserProducts(@PathVariable long userId) {
+        return productService.countUserProductsShop(userId);
+    }
+
+    @GetMapping("/{productId}/promotion")
+    public ResponseEntity<Promotion> getPromotionByProductId(@PathVariable Long productId) {
+        Promotion promotion = promotionService.getPromotionByProductId(productId);
+
+        if (promotion != null) {
+            return new ResponseEntity<>(promotion, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @GetMapping("/countPromotion/{userId}")
+    public long countPromotionByUserId(@PathVariable long userId) {
+        return productService.countPromotionByUserId(userId);
+    }
 }

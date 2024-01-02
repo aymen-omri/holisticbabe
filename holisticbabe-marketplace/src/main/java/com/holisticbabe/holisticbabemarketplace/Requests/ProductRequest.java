@@ -1,5 +1,6 @@
 package com.holisticbabe.holisticbabemarketplace.Requests;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonDeserialize
 public class ProductRequest {
     private long id_product;
     private String name;

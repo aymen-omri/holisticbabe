@@ -1,9 +1,11 @@
 package com.holisticbabe.holisticbabemarketplace.Impl;
 
+import com.holisticbabe.holisticbabemarketplace.Dtos.CourseDto;
 import com.holisticbabe.holisticbabemarketplace.Dtos.ProductDto;
 import com.holisticbabe.holisticbabemarketplace.Models.*;
 import com.holisticbabe.holisticbabemarketplace.Repositories.*;
 import com.holisticbabe.holisticbabemarketplace.Requests.ProductItemRequest;
+import com.holisticbabe.holisticbabemarketplace.Requests.ProductPromotionRequest;
 import com.holisticbabe.holisticbabemarketplace.Requests.ProductRequest;
 import com.holisticbabe.holisticbabemarketplace.Requests.ProductShop;
 import com.holisticbabe.holisticbabemarketplace.Services.ProductItemService;
@@ -69,9 +71,9 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public Product addProductWithItems(ProductRequest productRequest/*Long userId*/, Long categoryId) {
+    public Product addProductWithItems(ProductRequest productRequest,Long userId, Long categoryId) {
         try {
-            ///_User user = userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
+            _User user = userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
             Category category = categoryRepository.findById(categoryId).orElseThrow(EntityNotFoundException::new);
 
             Product product = new Product();
@@ -83,9 +85,11 @@ public class ProductServiceImpl implements ProductService {
             product.setDateCreated(LocalDate.now());
             product.setDateProduction(productRequest.getDateProduction());
             product.setSku(productRequest.getSku());
-            product.setIsApproved(0);
-           // product.setOwner(user);
+            product.setStatus(0);
+            product.setIs_approved(0);
+            product.setOwner(user);
             product.setCategory(category);
+
              Product savedProduct=productRepository.save(product);
             List<ProductItem> productItems = new ArrayList<>();
             for (ProductItemRequest itemRequest : productRequest.getProductItems()) {
@@ -112,7 +116,7 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    @Override
+    @Transactional
     public Product saveProductImages(Long productId, List<MultipartFile> images) {
         try {
             Product product = productRepository.findById(productId)
@@ -125,7 +129,6 @@ public class ProductServiceImpl implements ProductService {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-
                 Multimedia newMultimedia = new Multimedia(); // Create a new Multimedia object for each image
                 newMultimedia.setName(image.getOriginalFilename());
                 newMultimedia.setType(image.getContentType());
@@ -161,7 +164,8 @@ public class ProductServiceImpl implements ProductService {
             existingProduct.setPromotions(existingPromotion);
             existingProduct.setPrice(updatedProduct.getPrice());
             existingProduct.setQuantityInStock(updatedProduct.getQuantityInStock());
-            existingProduct.setIsApproved(updatedProduct.getIsApproved());
+            existingProduct.setStatus(updatedProduct.getStatus());
+            existingProduct.setIs_approved(updatedProduct.getIs_approved());
             existingProduct.setDateCreated(LocalDate.now());
             existingProduct.setSku(updatedProduct.getSku());
             existingProduct.setDateProduction(updatedProduct.getDateProduction());
@@ -218,12 +222,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDto> getProductsInCategory(String name) {
-        try {
             return productRepository.findByCategoryName(name).stream().map((p) -> modelMapper.map(p, ProductDto.class)).toList();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("An error occurred while fetching products in the category.");
-        }
     }
 
     @Override
@@ -278,4 +277,118 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toList());
     }
 
+
+
+    @Override
+    public List<ProductShop> getUserProductsShop(long id) {
+        List<Product> userProducts = productRepository.findProductsByIdUser(id);
+        List<Object[]> results = productRepository.listProductShop();
+        List<ProductShop> additionalProducts = results.stream()
+                .map(obj -> new ProductShop(
+                        (Long) obj[0],
+                        (String) obj[1],
+                        (BigDecimal) obj[2],
+                        (String) obj[3],
+                        (double) obj[4],
+                        (BigDecimal) obj[5],
+                        (String) obj[6],
+                        (Integer) obj[7]
+                ))
+                .collect(Collectors.toList());
+
+        // Fusionner les deux listes
+        List<ProductShop> mergedList = new ArrayList<>();
+        mergedList.addAll(additionalProducts);
+
+        return mergedList;
+    }
+
+
+
+    @Override
+    public List<ProductDto> getUserProducts(long id) {
+        return productRepository.findProductsByIdUser(id)
+                .stream()
+                .map(product -> modelMapper.map(product, ProductDto.class))
+                .toList();
+    }
+
+    @Override
+    @Transactional
+    public Product updateProductClient(Long id, Product updatedProduct,Long CategoryId) {
+        try {
+            Category existingCategory=categoryRepository.findById(CategoryId)
+                    .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+            Product existingProduct = productRepository.findById(id)
+                    .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+            existingProduct.setName(updatedProduct.getName());
+            existingProduct.setDescription(updatedProduct.getDescription());
+            existingProduct.setShortDescription(updatedProduct.getShortDescription());
+            existingProduct.setCategory(existingCategory);
+            existingProduct.setPrice(updatedProduct.getPrice());
+            existingProduct.setQuantityInStock(updatedProduct.getQuantityInStock());
+            existingProduct.setStatus(updatedProduct.getStatus());
+            existingProduct.setDateCreated(LocalDate.now());
+            existingProduct.setSku(updatedProduct.getSku());
+            existingProduct.setDateProduction(updatedProduct.getDateProduction());
+            Product updatedProd = productRepository.save(existingProduct);
+
+            log.info("Product with ID {} updated successfully.", id);
+
+            return updatedProd;
+        } catch (EntityNotFoundException ex) {
+            ex.printStackTrace();
+            throw ex;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("An error occurred while updating the product.");
+        }
+    }
+
+
+
+    public List<ProductPromotionRequest> getProductsWithPromotionAndImagesByOwnerId(Long ownerId) {
+        List<Object[]> results = productRepository.findProductsWithPromotionAndImagesByOwnerId(ownerId);
+
+        List<ProductPromotionRequest> productPromotionRequests = new ArrayList<>();
+
+        for (Object[] result : results) {
+            Product product = (Product) result[0];
+            String imageUrl = (String) result[1];
+
+            // Assuming you have a DTO (Data Transfer Object) for better control over the data
+            ProductPromotionRequest productPromotionRequest = new ProductPromotionRequest();
+            productPromotionRequest.setId(product.getId_product());
+            productPromotionRequest.setName(product.getName());
+            productPromotionRequest.setImageUrl(imageUrl);
+            productPromotionRequest.setDateCreated(product.getDateCreated());
+
+            Promotion promotion = product.getPromotion();
+            if (promotion != null) {
+                productPromotionRequest.setId_promotion(promotion.getId_promotion());
+                productPromotionRequest.setPromotionName(promotion.getName());
+                productPromotionRequest.setStartDate(promotion.getStartDate());
+                productPromotionRequest.setEndDate(promotion.getEndDate());
+                productPromotionRequest.setDiscount(promotion.getDiscount());
+                productPromotionRequest.setStatus(promotion.getStatus());
+            } else {
+                // Handle the case where promotion is null (optional)
+                // You can set default values or handle it based on your requirements
+            }
+
+            productPromotionRequests.add(productPromotionRequest);
+        }
+
+        return productPromotionRequests;
+    }
+
+    public long countUserProductsShop(long id) {
+        Long count = productRepository.countProductsByIdUser(id);
+        return count != null ? count : 0;
+    }
+
+    public long countPromotionByUserId(long userId) {
+            Long count = productRepository.countPromotionByUserId(userId);
+            return count != null ? count : 0;
+    }
 }

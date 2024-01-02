@@ -1,6 +1,8 @@
 package com.holisticbabe.holisticbabemarketplace.Controllers;
 
+import com.holisticbabe.holisticbabemarketplace.Models.Product;
 import com.holisticbabe.holisticbabemarketplace.Models.Promotion;
+import com.holisticbabe.holisticbabemarketplace.Repositories.ProductRepository;
 import com.holisticbabe.holisticbabemarketplace.Services.PromotionService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/promotions")
@@ -16,7 +19,8 @@ public class PromotionController {
 
     @Autowired
     private PromotionService promotionService;
-
+    @Autowired
+    private ProductRepository productRepository;
     @GetMapping
     public ResponseEntity<List<Promotion>> getAllPromotions() {
         List<Promotion> promotions = promotionService.getAllPromotions();
@@ -48,7 +52,7 @@ public class PromotionController {
         promotionService.deletePromotion(promotionId);
         return ResponseEntity.noContent().build();
     }
-    @PostMapping("/{promotionId}/{productId}")
+    @PostMapping("promotion/{promotionId}/products/{productId}")
     public ResponseEntity<Promotion> addProductToPromotion(
             @PathVariable Long promotionId,
             @PathVariable Long productId) {
@@ -68,4 +72,11 @@ public class PromotionController {
             return ResponseEntity.notFound().build();
         }
     }
+    @PostMapping("/addPromotionByProduct/{productId}")
+    public ResponseEntity<Promotion> addPromotionToProduct(@PathVariable Long productId,@RequestBody Promotion promotion) {
+        Promotion addedPromotion = promotionService.addPromotionToProduct(productId,promotion);
+        return new ResponseEntity<>(addedPromotion, HttpStatus.CREATED);
+    }
+
+
 }

@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
@@ -39,8 +41,11 @@ public class Product {
     private BigDecimal price;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateCreated;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateProduction;
-    private int isApproved;
+    private int status;
+    private int is_approved;
+
 
     @ManyToOne
     @JoinColumn(name = "id_category")
@@ -51,6 +56,7 @@ public class Product {
     private List<Review> reviews;
 
     @ManyToOne
+    @JoinColumn(name = "promotion_id")
     private Promotion promotions;
 
     @JsonIgnore
@@ -63,5 +69,9 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductItem> productItems;
+
+    @ManyToOne
+    private Promotion promotion;
+
 
 }

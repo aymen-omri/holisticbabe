@@ -1,5 +1,6 @@
 package com.holisticbabe.holisticbabemarketplace.Impl;
 
+import com.holisticbabe.holisticbabemarketplace.Dtos.ProductDto;
 import com.holisticbabe.holisticbabemarketplace.Repositories.ProductRepository;
 import com.holisticbabe.holisticbabemarketplace.Repositories.PromotionRepository;
 import com.holisticbabe.holisticbabemarketplace.Models.Product;
@@ -7,10 +8,12 @@ import com.holisticbabe.holisticbabemarketplace.Models.Promotion;
 
 import com.holisticbabe.holisticbabemarketplace.Services.PromotionService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PromotionServiceImpl implements PromotionService {
@@ -73,14 +76,11 @@ public class PromotionServiceImpl implements PromotionService {
         }
     }
 
-    @Override
+    @Transactional
     public void deletePromotion(Long promotionId) {
-        try {
-            promotionRepository.deleteById(promotionId);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("An error occurred while deleting the promotion.");
-        }
+        productRepository.updatePromotionIdToNull(promotionId);
+        promotionRepository.deleteById(promotionId);
+
     }
 
     @Override
@@ -109,4 +109,24 @@ public class PromotionServiceImpl implements PromotionService {
             promotionRepository.save(promotion);
 
     }
+    public Promotion addPromotionToProduct(Long productId, Promotion promotion) {
+        Promotion savedPromotion = promotionRepository.save(promotion);
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+        product.setPromotion(savedPromotion);
+        productRepository.save(product);
+        return savedPromotion;
+    }
+    public Promotion getPromotionByProductId(Long productId) {
+        Optional<Product> productOptional = productRepository.findById(productId);
+
+        if (productOptional.isPresent()) {
+            Product product = productOptional.get();
+            return product.getPromotion();
+        }
+
+        return null;
+    }
+
 }
